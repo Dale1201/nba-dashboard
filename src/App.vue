@@ -19,12 +19,31 @@ watch(search, async () => {
   }
   debouncedSearch();
 });
+
+const playerId = ref();
+const playerIdData = ref();
+let debouncedPlayerId;
+watch(playerId, async () => {
+  if (!debouncedPlayerId) {
+    debouncedPlayerId = debounce(async () => {
+      playerIdData.value = await PlayerService.getPlayer(playerId.value);
+    }, 1000);
+  }
+  debouncedPlayerId();
+});
 </script>
 
 <template>
   <h1>Players</h1>
   <input type="text" v-model="search" />
+  <input type="number" v-model="playerId"/>
+  <p>{{ playerIdData }}</p>
   <p>{{ players }}</p>
 </template>
 
-<style scoped></style>
+<style scoped>
+input {
+  margin: 2rem;
+}
+
+</style>

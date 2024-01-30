@@ -9,4 +9,9 @@ export default class PlayerService {
         const response = await ApiService.get(`players?search=${searchTerm}`);
         return response.data;
     }
+
+    static async getPlayer(id) {
+        const response = await ApiService.get(`players/${id}`);
+        return response.data;
+    }
 }
