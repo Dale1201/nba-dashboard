@@ -1,10 +1,3 @@
-<script setup>
-import AllPlayers from './components/AllPlayers.vue';
-</script>
-
 <template>
-  <!-- <AllPlayers /> -->
+  <router-view />
 </template>
-
-<style scoped>
-</style>
