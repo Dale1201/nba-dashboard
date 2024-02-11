@@ -2,7 +2,10 @@
 import { onMounted, ref, watch } from "vue";
 import PlayerService from "../api/ball-dont-lie/player-service";
 import { debounce } from "../utils/debounceDelay";
-import DataView from "primevue/dataview";
+import PlayerStatsModal from "./PlayerStatsModal.vue";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
 
 const players = ref([]);
 onMounted(async () => {
@@ -45,17 +48,31 @@ async function onPageChange(event) {
   currentPage.value = event.page;
   players.value = await PlayerService.getPlayers(search.value, 25, event.page);
 }
+
+// Modal logic
+const selectedPlayer = ref({});
+const isPlayerStatsModalVisible = ref(false);
+function togglePlayerStatsModal(player) {
+  selectedPlayer.value = player;
+  isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
+}
 </script>
 
 <template>
-  <input type="text" v-model="search" />
-  <!--<input type="number" v-model="playerId"/>
-  <p>{{ playerIdData }}</p> -->
-  <!-- <p>{{ players }}</p> -->
+  <div style="display: flex; justify-content: flex-end">
+    <IconField iconPosition="left" style="width: fit-content">
+      <InputIcon>
+        <i class="pi pi-search" />
+      </InputIcon>
+      <InputText v-model="search" placeholder="Search" />
+    </IconField>
+  </div>
+
+  <div style="padding: 1rem"></div>
 
   <div v-if="players.length == 0">No Players Found</div>
   <div class="players" v-else>
-    <div v-for="(player, index) in players" :key="index">
+    <div class="player" v-for="(player, index) in players" :key="index" @click="togglePlayerStatsModal(player)">
       <div class="headshot-container">
         <img src="/player-headshots/2544.png" alt="player image" />
       </div>
@@ -96,13 +113,10 @@ async function onPageChange(event) {
     <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 1 })">&gt</button>
     <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 5 })">&gt&gt</button>
   </div>
+  <PlayerStatsModal v-model:visible="isPlayerStatsModalVisible" :player-info="selectedPlayer" />
 </template>
 
 <style scoped>
-input {
-  margin: 2rem;
-}
-
 .headshot-container {
   max-width: 8rem;
 
@@ -116,6 +130,12 @@ input {
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 2rem;
+}
+
+.player:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.3s;
 }
 
 .paginator {

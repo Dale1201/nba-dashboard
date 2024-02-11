@@ -6,6 +6,8 @@ import router from "./router";
 import PrimeVue from "primevue/config";
 import "primevue/resources/themes/md-dark-indigo/theme.css";
 import Button from "primevue/button";
+import 'primeicons/primeicons.css'
+
 
 ApiService.initialise();
 
