@@ -1,7 +1,5 @@
 import ApiService from "../api-service";
 
-const START_YEAR = 2020;
-const CURRENT_YEAR = 2023;
 export default class PlayerService {
   static async getPlayers(searchTerm, perPage = 25, page = 0) {
     if (!searchTerm) {
@@ -18,10 +16,10 @@ export default class PlayerService {
     return response.data;
   }
 
-  static async getPlayerSeasonAverages(playerId) {
+  static async getPlayerSeasonAverages(playerId, startYear = 2020, currentYear = 2023) {
     const results = [];
 
-    for (let i = START_YEAR; i <= CURRENT_YEAR; i++) {
+    for (let i = startYear; i <= currentYear; i++) {
       const response = await ApiService.get(`season_averages?season=${i}&player_ids[]=${playerId}`);
       if (response.data.data.length > 0) {
         results.push(response.data.data[0]);

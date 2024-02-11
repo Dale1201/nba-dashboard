@@ -4,6 +4,7 @@ import PlayerService from "../api/ball-dont-lie/player-service";
 import { defineProps, onUpdated, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import ProgressSpinner from 'primevue/progressspinner';
 
 const props = defineProps({
   playerInfo: Object,
@@ -13,7 +14,21 @@ const seasonAverages = ref();
 onUpdated(async () => {
   seasonAverages.value = undefined;
   seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id);
+
+  // Reset load more clicks
+  loadMoreClicks.value = 0;
 });
+
+// Load more logic
+const loadMoreClicks = ref(0);
+const hideLoadMore = ref(false);
+async function loadMore() {
+  loadMoreClicks.value++;
+
+  hideLoadMore.value = true;
+  seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id, 2019 - loadMoreClicks.value*3);
+  hideLoadMore.value = false;
+}
 </script>
 
 <template>
@@ -46,7 +61,8 @@ onUpdated(async () => {
       </DataTable>
 
       <div class="load-button-container">
-        <Button >Load More</Button>
+        <ProgressSpinner v-if="hideLoadMore" style="width: 50px; height: 50px" />
+        <Button @click="loadMore" v-else>Load More</Button>
       </div>
     </div>
   </Dialog>
