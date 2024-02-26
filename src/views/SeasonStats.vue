@@ -1,3 +1,3 @@
 <template>
-    <h1>Season Stats</h1>
+    <h1>Season Leaders</h1>
 </template>
