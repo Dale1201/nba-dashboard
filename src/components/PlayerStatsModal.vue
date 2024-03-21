@@ -1,23 +1,27 @@
 <script setup>
 import Dialog from "primevue/dialog";
-import PlayerService from "../api/ball-dont-lie/player-service";
+import PlayerService from "../api/nba-api/player-service";
 import { defineProps, onUpdated, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ProgressSpinner from 'primevue/progressspinner';
 
 const props = defineProps({
-  playerInfo: Object,
+  playerId: Number,
+  playerName: String,
 });
 
 const seasonAverages = ref();
-onUpdated(async () => {
-  seasonAverages.value = undefined;
-  seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id);
+
+const playerInfo = ref();
+
+async function fetchPlayerInfo() {
+  // seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id);
+  playerInfo.value = await PlayerService.getPlayerInfo(props.playerId);
 
   // Reset load more clicks
   loadMoreClicks.value = 0;
-});
+}
 
 // Load more logic
 const loadMoreClicks = ref(0);
@@ -32,8 +36,9 @@ async function loadMore() {
 </script>
 
 <template>
-  <Dialog :header="`${playerInfo.first_name} ${playerInfo.last_name}`" modal style="width: 80vw">
-    <div>
+  <Dialog :header="`${playerName}`" modal style="width: 80vw" @show="fetchPlayerInfo">
+    <p>{{ playerInfo }}</p>
+    <!-- <div>
       <div class="headshot-container">
         <img src="/player-headshots/2544.png" alt="player image" />
       </div>
@@ -64,7 +69,7 @@ async function loadMore() {
         <ProgressSpinner v-if="hideLoadMore" style="width: 50px; height: 50px" />
         <Button @click="loadMore" v-else>Load More</Button>
       </div>
-    </div>
+    </div> -->
   </Dialog>
 </template>
 
@@ -83,6 +88,5 @@ async function loadMore() {
   background-color: transparent;
   border: none;
   color: #7989ff;
-
 }
 </style>

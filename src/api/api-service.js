@@ -3,7 +3,7 @@ import axios from "axios";
 export default class ApiService {
   static initialise() {
     this.api = axios.create({
-      baseURL: "https://www.balldontlie.io/api/v1/",
+      baseURL: "http://127.0.0.1:8000/nbaapp",
     });
   }
 
