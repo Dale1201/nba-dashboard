@@ -10,11 +10,10 @@ import nba_api.stats.static.teams as teams
 # Create your views here.
 # request --> response
 
-def getLeagueLeaders(request):
-    # asyncLeagueLeaders = sync_to_async(LeagueLeaders)
-    # pts_leaders = await asyncLeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation="AST")
-    pts_leaders = LeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation="PTS")
-    return HttpResponse(pts_leaders.get_json())
+def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
+    stat_leaders = LeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation=stat_category_abbreviation)
+    df = stat_leaders.get_data_frames()[0]
+    return HttpResponse(df.to_json(orient='records'))
 
 def getPlayerCareerStats(request, player_id):
     player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
