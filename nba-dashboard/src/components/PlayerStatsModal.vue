@@ -13,15 +13,18 @@ const props = defineProps({
 });
 
 const playerInfo = ref({});
-const seasonStats = ref();
+const seasonStats = ref([]);
 
 const displaySeasonStats = computed(() => {
   return loadMoreClicked.value ? seasonStats.value : seasonStats.value?.slice(0, 3);
 });
 
+const isLoading = ref(false);
 async function fetchPlayerInfo() {
+  isLoading.value = true;
   playerInfo.value = await PlayerService.getPlayerInfo(props.playerId);
   seasonStats.value = await PlayerService.getPlayerSeasonStats(props.playerId);
+  isLoading.value = false;
 
   // Reset load more clicks
   loadMoreClicked.value = false;
@@ -29,7 +32,6 @@ async function fetchPlayerInfo() {
 
 // Load more logic
 const loadMoreClicked = ref(false);
-const hideLoadMore = ref(false);
 async function loadMore() {
   loadMoreClicked.value = true;
 }
@@ -50,17 +52,19 @@ function getSeasonAverage(totalStat, gamesPlayed) {
         />
       </div>
     </div>
-    <div>
+    <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center;" />
+    <div v-if="!isLoading">
       <p>Position: {{ playerInfo["POSITION"] || "N/A" }}</p>
       <p>Team: {{ `${playerInfo["TEAM_CITY"]} ${playerInfo["TEAM_NAME"]}` || "N/A" }}</p>
       <p>Height: {{ playerInfo["HEIGHT"] }}</p>
     </div>
     <h1>Season Averages</h1>
-    <div v-if="displaySeasonStats === undefined">Loading...</div>
-    <div v-else-if="displaySeasonStats.length == 0">No data available for this player</div>
+    <div v-if="isLoading"></div>
+    <div v-else-if="displaySeasonStats && displaySeasonStats.length == 0">No data available for this player</div>
     <div v-else class="season-average-container">
       <DataTable :value="displaySeasonStats">
         <column field="GP" header="Games Played"></column>
+        <column field="TEAM_ABBREVIATION" header="Team"></column>
         <column field="SEASON_ID" header="Season"></column>
         <column field="PTS" header="PTS">
           <template #body="slotProps">
@@ -93,7 +97,6 @@ function getSeasonAverage(totalStat, gamesPlayed) {
       </DataTable>
 
       <div class="load-button-container">
-        <ProgressSpinner v-if="hideLoadMore" style="width: 50px; height: 50px" />
         <Button @click="loadMore" v-if="!loadMoreClicked && seasonStats.length > 3">View All</Button>
       </div>
     </div>

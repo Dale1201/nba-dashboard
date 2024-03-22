@@ -40,8 +40,8 @@ const displayPlayers = computed(() => {
     );
   }
 
-  if (teamSelected.value) {
-    res = res.filter((player) => player["TEAM_ID"] == teamSelected.value);
+  if (teamsSelected.value.length > 0) {
+    res = res.filter((player) => teamsSelected.value.includes(player["TEAM_ID"]));
   }
   return res.slice(indexMin, indexMax);
 });
@@ -55,24 +55,36 @@ function togglePlayerStatsModal(player) {
 }
 
 const showTeams = ref(false);
-const teamSelected = ref();
+const teamsSelected = ref([]);
 
 function handleTeamLogoClick(teamId) {
-  if (teamSelected.value == teamId) {
-    teamSelected.value = null;
+  if (teamsSelected.value.includes(teamId)) {
+    teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
     return;
   }
-  showTeams.value = false;
-  teamSelected.value = teamId;
+  teamsSelected.value = [...teamsSelected.value, teamId];
+}
+
+function handleCloseFilterLogoClick(teamId) {
+  teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
+}
+
+function clearFilters() {
+  playerSearch.value = "";
+  teamsSelected.value = [];
 }
 </script>
 
 <template>
-  <p>{{ playerSearch }}</p>
-  <div style="display: flex; justify-content: flex-end; gap: 2rem;">
-    <div style="display: flex; align-items: center; gap: 1rem;">
+  <div style="display: flex; justify-content: flex-end; gap: 2rem">
+    <div style="display: flex; align-items: center; gap: 1rem">
       <span>Filter By:</span>
-      <Button @click="showTeams = !showTeams">Teams</Button>
+      <Button @click="showTeams = !showTeams" class="teams-filter-button">
+        Teams
+        <Transition name="fade-container" mode="out-in">
+          <div v-if="showTeams" class="triangle"></div>
+        </Transition>
+      </Button>
     </div>
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
@@ -80,17 +92,33 @@ function handleTeamLogoClick(teamId) {
       </InputIcon>
       <InputText v-model="playerSearch" placeholder="Search" />
     </IconField>
+
+    <Button :disabled="playerSearch.length === 0 && teamsSelected.length === 0" @click="clearFilters">Clear</Button>
   </div>
 
-  <div class="team-container" v-if="showTeams">
-    <div v-for="team in teams" :key="team.id" @click="handleTeamLogoClick(team.id)">
-      <div class="logo-container">
-        <img
-          :src="getTeamLogo(team.id)"
-          onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
-          alt="player image"
-        />
+  <Transition name="fade-container" mode="out-in">
+    <div class="team-container" v-if="showTeams">
+      <div v-for="team in teams" :key="team.id" @click="handleTeamLogoClick(team.id)">
+        <div class="logo-container">
+          <img
+            :src="getTeamLogo(team.id)"
+            onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+            alt="player image"
+          />
+        </div>
       </div>
+      <button class="minimise-box" @click="showTeams = !showTeams">^</button>
+    </div>
+  </Transition>
+
+  <div class="filter-box" v-if="teamsSelected.length > 0">
+    <div class="filter-logo-container" v-for="team in teamsSelected">
+      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)">x</button>
+      <img
+        :src="getTeamLogo(team)"
+        onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+        alt="player image"
+      />
     </div>
   </div>
 
@@ -156,12 +184,59 @@ function handleTeamLogoClick(teamId) {
 </template>
 
 <style scoped>
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid #9fa8da;
+  position: absolute;
+  bottom: -8px;
+  left: 45%;
+}
+
+.fade-container-enter-from,
+.fade-container-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.fade-container-enter-active {
+  transition: opacity 0.4s ease-out, transform 0.3s ease-out;
+}
+
+.fade-container-leave-active {
+  transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+}
+
+.fade-container-enter-to,
+.fade-container-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 .team-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 2rem;
+  background-color: #9fa8da;
+  border-radius: 12px;
+  padding: 1rem 1rem 0 1rem;
+  margin-top: 0.5rem;
 }
+
+.minimise-box {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: lighter;
+  border-radius: 4px;
+  background-color: #8a97ee;
+}
+
 
 .headshot-container {
   max-width: 8rem;
@@ -173,10 +248,52 @@ function handleTeamLogoClick(teamId) {
 
 .logo-container {
   max-width: 5rem;
+  transition: all 2s ease-in;
 
   img {
     width: 100%;
   }
+}
+
+.filter-box {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.filter-logo-container {
+  max-width: 4rem;
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  .close-filter-button {
+    position: absolute;
+    right: 0;
+    font-size: 0.7rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ff7979;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.teams-filter-button {
+  position: relative;
+  overflow: visible;
+}
+.teams-filter-button:active,
+.teams-filter-button:focus {
+  background-color: #9fa8da;
 }
 
 .players {
@@ -184,9 +301,11 @@ function handleTeamLogoClick(teamId) {
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 2rem;
+  transition: all 2s ease-in;
 }
 
-.player:hover {
+.player:hover,
+.logo-container:hover {
   cursor: pointer;
   transform: scale(1.1);
   transition: transform 0.3s;
