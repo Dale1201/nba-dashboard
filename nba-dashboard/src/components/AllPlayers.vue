@@ -76,13 +76,26 @@ function clearFilters() {
 </script>
 
 <template>
+  <h1 style="margin-top: 0;">Player Archives</h1>
   <div style="display: flex; justify-content: flex-end; gap: 2rem">
     <div style="display: flex; align-items: center; gap: 1rem">
       <span>Filter By:</span>
-      <Button @click="showTeams = !showTeams" class="teams-filter-button">
+      <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
         Teams
         <Transition name="fade-container" mode="out-in">
           <div v-if="showTeams" class="triangle"></div>
+        </Transition>
+      </Button>
+      <Button class="filter-button" severity="info">
+        Position
+        <Transition name="fade-container" mode="out-in">
+          <div v-if="false" class="triangle"></div>
+        </Transition>
+      </Button>
+      <Button class="filter-button" severity="info">
+        Height
+        <Transition name="fade-container" mode="out-in">
+          <div v-if="false" class="triangle"></div>
         </Transition>
       </Button>
     </div>
@@ -123,7 +136,7 @@ function clearFilters() {
   </div>
 
   <div style="padding: 1rem"></div>
-  <div v-if="!players || players.length == 0">No Players Found</div>
+  <div v-if="!displayPlayers || displayPlayers.length == 0">No Players Found</div>
   <div class="players" v-else>
     <div
       class="player"
@@ -184,16 +197,6 @@ function clearFilters() {
 </template>
 
 <style scoped>
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 10px solid #9fa8da;
-  position: absolute;
-  bottom: -8px;
-  left: 45%;
-}
 
 .fade-container-enter-from,
 .fade-container-leave-to {
@@ -236,7 +239,6 @@ function clearFilters() {
   border-radius: 4px;
   background-color: #8a97ee;
 }
-
 
 .headshot-container {
   max-width: 8rem;
@@ -287,13 +289,25 @@ function clearFilters() {
   }
 }
 
-.teams-filter-button {
+.filter-button {
   position: relative;
   overflow: visible;
 }
-.teams-filter-button:active,
-.teams-filter-button:focus {
-  background-color: #9fa8da;
+.filter-button:active,
+.filter-button:focus {
+  background-color: #90caf9;
+}
+
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid #90caf9;
+  position: absolute;
+  bottom: -8px;
+  left: 45%;
 }
 
 .players {
