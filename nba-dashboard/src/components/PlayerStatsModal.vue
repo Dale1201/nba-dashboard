@@ -43,7 +43,7 @@ function getSeasonAverage(totalStat, gamesPlayed) {
 
 <template>
   <Dialog :header="`${playerName}`" modal style="width: 80vw" @show="fetchPlayerInfo">
-    <div>
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
       <div class="headshot-container">
         <img
           :src="getPlayerHeadshot(playerId)"
@@ -51,16 +51,15 @@ function getSeasonAverage(totalStat, gamesPlayed) {
           alt="player image"
         />
       </div>
+      <div v-if="!isLoading">
+        <p>Position: {{ playerInfo["POSITION"] || "N/A" }}</p>
+        <p>Team: {{ `${playerInfo["TEAM_CITY"]} ${playerInfo["TEAM_NAME"]}` || "N/A" }}</p>
+        <p>Height: {{ playerInfo["HEIGHT"] }}</p>
+      </div>
     </div>
-    <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center;" />
-    <div v-if="!isLoading">
-      <p>Position: {{ playerInfo["POSITION"] || "N/A" }}</p>
-      <p>Team: {{ `${playerInfo["TEAM_CITY"]} ${playerInfo["TEAM_NAME"]}` || "N/A" }}</p>
-      <p>Height: {{ playerInfo["HEIGHT"] }}</p>
-    </div>
+    <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center" />
     <h1>Season Averages</h1>
-    <div v-if="isLoading"></div>
-    <div v-else-if="displaySeasonStats && displaySeasonStats.length == 0">No data available for this player</div>
+    <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">No data available for this player</div>
     <div v-else class="season-average-container">
       <DataTable :value="displaySeasonStats">
         <column field="GP" header="Games Played"></column>
@@ -104,6 +103,10 @@ function getSeasonAverage(totalStat, gamesPlayed) {
 </template>
 
 <style scoped>
+.headshot-container {
+  width: fit-content;
+}
+
 .season-average-container {
   margin-top: 1rem;
 }

@@ -76,7 +76,6 @@ function clearFilters() {
 </script>
 
 <template>
-  <h1 style="margin-top: 0;">Player Archives</h1>
   <div style="display: flex; justify-content: flex-end; gap: 2rem">
     <div style="display: flex; align-items: center; gap: 1rem">
       <span>Filter By:</span>
@@ -316,6 +315,12 @@ function clearFilters() {
   justify-content: space-around;
   gap: 2rem;
   transition: all 2s ease-in;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .player:hover,
