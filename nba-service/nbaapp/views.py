@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from nba_api.stats.endpoints import LeagueLeaders
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.endpoints import commonallplayers
@@ -38,4 +38,4 @@ def getTeamRoster(request, team_id, season):
 
 def getAllTeams(request):
     all_teams = teams.get_teams()
-    return HttpResponse(all_teams)
+    return JsonResponse(all_teams, safe=False)
