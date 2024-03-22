@@ -18,27 +18,27 @@ onMounted(async () => {
 const search = ref("");
 
 let debouncedSearch;
-watch(search, async () => {
-  if (!debouncedSearch) {
-    debouncedSearch = debounce(async () => {
-      players.value = await PlayerService.getPlayers(search.value);
-      currentPage.value = 1;
-    }, 1000);
-  }
-  debouncedSearch();
-});
+// watch(search, async () => {
+//   if (!debouncedSearch) {
+//     debouncedSearch = debounce(async () => {
+//       players.value = await PlayerService.getPlayers(search.value);
+//       currentPage.value = 1;
+//     }, 1000);
+//   }
+//   debouncedSearch();
+// });
 
 const playerId = ref();
 const playerIdData = ref();
 let debouncedPlayerId;
-watch(playerId, async () => {
-  if (!debouncedPlayerId) {
-    debouncedPlayerId = debounce(async () => {
-      playerIdData.value = await PlayerService.getPlayer(playerId.value);
-    }, 1000);
-  }
-  debouncedPlayerId();
-});
+// watch(playerId, async () => {
+//   if (!debouncedPlayerId) {
+//     debouncedPlayerId = debounce(async () => {
+//       playerIdData.value = await PlayerService.getPlayer(playerId.value);
+//     }, 1000);
+//   }
+//   debouncedPlayerId();
+// });
 
 // Paginator logic
 const currentPage = ref(1);
@@ -53,6 +53,10 @@ async function onPageChange(event) {
 const displayPlayers = computed(() => {
   const indexMin = (currentPage.value - 1) * PLAYERS_PER_PAGE;
   const indexMax = currentPage.value * PLAYERS_PER_PAGE;
+
+  if (search.value) {
+    return players.value.filter((player) => player["DISPLAY_FIRST_LAST"].toLowerCase().includes(search.value.toLowerCase())).slice(indexMin, indexMax);
+  }
   return players.value.slice(indexMin, indexMax);
 });
 
@@ -66,6 +70,7 @@ function togglePlayerStatsModal(player) {
 </script>
 
 <template>
+  <p>{{ search }}</p>
   <div style="display: flex; justify-content: flex-end">
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
