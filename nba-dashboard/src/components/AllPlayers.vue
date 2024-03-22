@@ -1,8 +1,9 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import PlayerService from "../api/nba-api/player-service";
-import { debounce } from "../utils/debounceDelay";
+import TeamService from "../api/nba-api/team-service";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
+import getTeamLogo from "../utils/getTeamLogo";
 import PlayerStatsModal from "./PlayerStatsModal.vue";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
@@ -11,34 +12,11 @@ import InputText from "primevue/inputtext";
 const PLAYERS_PER_PAGE = 20;
 
 const players = ref([]);
+const teams = ref("");
 onMounted(async () => {
   players.value = await PlayerService.getPlayers();
+  teams.value = await TeamService.getTeams();
 });
-
-const search = ref("");
-
-let debouncedSearch;
-// watch(search, async () => {
-//   if (!debouncedSearch) {
-//     debouncedSearch = debounce(async () => {
-//       players.value = await PlayerService.getPlayers(search.value);
-//       currentPage.value = 1;
-//     }, 1000);
-//   }
-//   debouncedSearch();
-// });
-
-const playerId = ref();
-const playerIdData = ref();
-let debouncedPlayerId;
-// watch(playerId, async () => {
-//   if (!debouncedPlayerId) {
-//     debouncedPlayerId = debounce(async () => {
-//       playerIdData.value = await PlayerService.getPlayer(playerId.value);
-//     }, 1000);
-//   }
-//   debouncedPlayerId();
-// });
 
 // Paginator logic
 const currentPage = ref(1);
@@ -50,14 +28,22 @@ async function onPageChange(event) {
   currentPage.value = Math.min(event.page, Math.floor(players.value.length / PLAYERS_PER_PAGE));
 }
 
+const playerSearch = ref("");
 const displayPlayers = computed(() => {
   const indexMin = (currentPage.value - 1) * PLAYERS_PER_PAGE;
   const indexMax = currentPage.value * PLAYERS_PER_PAGE;
 
-  if (search.value) {
-    return players.value.filter((player) => player["DISPLAY_FIRST_LAST"].toLowerCase().includes(search.value.toLowerCase())).slice(indexMin, indexMax);
+  let res = players.value;
+  if (playerSearch.value) {
+    res = players.value.filter((player) =>
+      player["DISPLAY_FIRST_LAST"].toLowerCase().includes(playerSearch.value.toLowerCase())
+    );
   }
-  return players.value.slice(indexMin, indexMax);
+
+  if (teamSelected.value) {
+    res = res.filter((player) => player["TEAM_ID"] == teamSelected.value);
+  }
+  return res.slice(indexMin, indexMax);
 });
 
 // Modal logic
@@ -67,17 +53,45 @@ function togglePlayerStatsModal(player) {
   selectedPlayer.value = player;
   isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
 }
+
+const showTeams = ref(false);
+const teamSelected = ref();
+
+function handleTeamLogoClick(teamId) {
+  if (teamSelected.value == teamId) {
+    teamSelected.value = null;
+    return;
+  }
+  showTeams.value = false;
+  teamSelected.value = teamId;
+}
 </script>
 
 <template>
-  <p>{{ search }}</p>
-  <div style="display: flex; justify-content: flex-end">
+  <p>{{ playerSearch }}</p>
+  <div style="display: flex; justify-content: flex-end; gap: 2rem;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span>Filter By:</span>
+      <Button @click="showTeams = !showTeams">Teams</Button>
+    </div>
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
         <i class="pi pi-search" />
       </InputIcon>
-      <InputText v-model="search" placeholder="Search" />
+      <InputText v-model="playerSearch" placeholder="Search" />
     </IconField>
+  </div>
+
+  <div class="team-container" v-if="showTeams">
+    <div v-for="team in teams" :key="team.id" @click="handleTeamLogoClick(team.id)">
+      <div class="logo-container">
+        <img
+          :src="getTeamLogo(team.id)"
+          onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+          alt="player image"
+        />
+      </div>
+    </div>
   </div>
 
   <div style="padding: 1rem"></div>
@@ -142,8 +156,23 @@ function togglePlayerStatsModal(player) {
 </template>
 
 <style scoped>
+.team-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
 .headshot-container {
   max-width: 8rem;
+
+  img {
+    width: 100%;
+  }
+}
+
+.logo-container {
+  max-width: 5rem;
 
   img {
     width: 100%;
