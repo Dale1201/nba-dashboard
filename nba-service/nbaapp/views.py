@@ -18,7 +18,8 @@ def getLeagueLeaders(request):
 
 def getPlayerCareerStats(request, player_id):
     player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
-    return HttpResponse(player_stats.get_json())
+    df = player_stats.get_data_frames()[0]
+    return HttpResponse(df.to_json(orient='records'))
 
 def getPlayerInfo(request, player_id):
     player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
