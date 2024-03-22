@@ -2,18 +2,18 @@
 import { computed, onMounted, ref, watch } from "vue";
 import PlayerService from "../api/nba-api/player-service";
 import { debounce } from "../utils/debounceDelay";
+import getPlayerHeadshot from "../utils/getPlayerHeadshot";
 import PlayerStatsModal from "./PlayerStatsModal.vue";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 
-const PLAYERS_PER_PAGE = 25;
+const PLAYERS_PER_PAGE = 20;
 
 const players = ref([]);
 onMounted(async () => {
   players.value = await PlayerService.getPlayers();
 });
-
 
 const search = ref("");
 
@@ -47,13 +47,13 @@ async function onPageChange(event) {
     currentPage.value = 1;
     return;
   }
-  currentPage.value = Math.min(event.page, players.value.length / PLAYERS_PER_PAGE);
+  currentPage.value = Math.min(event.page, Math.floor(players.value.length / PLAYERS_PER_PAGE));
 }
 
 const displayPlayers = computed(() => {
   const indexMin = (currentPage.value - 1) * PLAYERS_PER_PAGE;
   const indexMax = currentPage.value * PLAYERS_PER_PAGE;
-  return players.value.slice(indexMin, indexMax); 
+  return players.value.slice(indexMin, indexMax);
 });
 
 // Modal logic
@@ -66,7 +66,6 @@ function togglePlayerStatsModal(player) {
 </script>
 
 <template>
-  
   <div style="display: flex; justify-content: flex-end">
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
@@ -79,9 +78,18 @@ function togglePlayerStatsModal(player) {
   <div style="padding: 1rem"></div>
   <div v-if="!players || players.length == 0">No Players Found</div>
   <div class="players" v-else>
-    <div class="player" v-for="(player, index) in displayPlayers" :key="index" @click="togglePlayerStatsModal(player)">
+    <div
+      class="player"
+      v-for="player in displayPlayers"
+      :key="player['PERSON_ID']"
+      @click="togglePlayerStatsModal(player)"
+    >
       <div class="headshot-container">
-        <img src="/player-headshots/2544.png" alt="player image" />
+        <img
+          :src="getPlayerHeadshot(player['PERSON_ID'])"
+          onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+          alt="player image"
+        />
       </div>
       <div>{{ player["DISPLAY_FIRST_LAST"] }}</div>
     </div>
@@ -120,7 +128,12 @@ function togglePlayerStatsModal(player) {
     <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 1 })">&gt</button>
     <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 5 })">&gt&gt</button>
   </div>
-  <PlayerStatsModal v-model:visible="isPlayerStatsModalVisible" :player-id="selectedPlayer['PERSON_ID']" :player-name="selectedPlayer['DISPLAY_FIRST_LAST']" :key="selectedPlayer['PERSON_ID']"/>
+  <PlayerStatsModal
+    v-model:visible="isPlayerStatsModalVisible"
+    :player-id="selectedPlayer['PERSON_ID']"
+    :player-name="selectedPlayer['DISPLAY_FIRST_LAST']"
+    :key="selectedPlayer['PERSON_ID']"
+  />
 </template>
 
 <style scoped>

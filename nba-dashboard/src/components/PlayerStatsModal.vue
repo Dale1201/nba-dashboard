@@ -1,75 +1,102 @@
 <script setup>
 import Dialog from "primevue/dialog";
 import PlayerService from "../api/nba-api/player-service";
-import { defineProps, onUpdated, ref } from "vue";
+import { computed, defineProps, onUpdated, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import ProgressSpinner from 'primevue/progressspinner';
+import ProgressSpinner from "primevue/progressspinner";
+import getPlayerHeadshot from "../utils/getPlayerHeadshot";
 
 const props = defineProps({
   playerId: Number,
   playerName: String,
 });
 
-const seasonAverages = ref();
+const playerInfo = ref({});
+const seasonStats = ref();
 
-const playerInfo = ref();
+const displaySeasonStats = computed(() => {
+  return loadMoreClicked.value ? seasonStats.value : seasonStats.value?.slice(0, 3);
+});
 
 async function fetchPlayerInfo() {
-  // seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id);
   playerInfo.value = await PlayerService.getPlayerInfo(props.playerId);
+  seasonStats.value = await PlayerService.getPlayerSeasonStats(props.playerId);
 
   // Reset load more clicks
-  loadMoreClicks.value = 0;
+  loadMoreClicked.value = false;
 }
 
 // Load more logic
-const loadMoreClicks = ref(0);
+const loadMoreClicked = ref(false);
 const hideLoadMore = ref(false);
 async function loadMore() {
-  loadMoreClicks.value++;
+  loadMoreClicked.value = true;
+}
 
-  hideLoadMore.value = true;
-  seasonAverages.value = await PlayerService.getPlayerSeasonAverages(props.playerInfo.id, 2019 - loadMoreClicks.value*3);
-  hideLoadMore.value = false;
+function getSeasonAverage(totalStat, gamesPlayed) {
+  return (totalStat / gamesPlayed).toFixed(1);
 }
 </script>
 
 <template>
   <Dialog :header="`${playerName}`" modal style="width: 80vw" @show="fetchPlayerInfo">
-    <p>{{ playerInfo }}</p>
-    <!-- <div>
+    <div>
       <div class="headshot-container">
-        <img src="/player-headshots/2544.png" alt="player image" />
+        <img
+          :src="getPlayerHeadshot(playerId)"
+          onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+          alt="player image"
+        />
       </div>
     </div>
     <div>
-      <p>Position: {{ playerInfo.position || "N/A" }}</p>
-      <p>Team: {{ playerInfo.team.full_name || "N/A" }}</p>
-      <p>Height: {{ playerInfo.height_feet }}-{{ playerInfo.height_inches }}</p>
+      <p>Position: {{ playerInfo["POSITION"] || "N/A" }}</p>
+      <p>Team: {{ `${playerInfo["TEAM_CITY"]} ${playerInfo["TEAM_NAME"]}` || "N/A" }}</p>
+      <p>Height: {{ playerInfo["HEIGHT"] }}</p>
     </div>
     <h1>Season Averages</h1>
-    <div v-if="seasonAverages === undefined">Loading...</div>
-    <div v-else-if="seasonAverages.length == 0">No data available for this player</div>
+    <div v-if="displaySeasonStats === undefined">Loading...</div>
+    <div v-else-if="displaySeasonStats.length == 0">No data available for this player</div>
     <div v-else class="season-average-container">
-      <DataTable :value="seasonAverages">
-        <column field="games_played" header="Games Played"></column>
-        <column field="season" header="Season"></column>
-        <column field="pts" header="PTS"></column>
-        <column field="reb" header="REB"></column>
-        <column field="ast" header="AST"></column>
-        <column field="stl" header="STL"></column>
-        <column field="blk" header="BLK"></column>
-        <column field="fg_pct" header="FG%"></column>
-        <column field="fg3_pct" header="3P%"></column>
-        <column field="ft_pct" header="FT%"></column>
+      <DataTable :value="displaySeasonStats">
+        <column field="GP" header="Games Played"></column>
+        <column field="SEASON_ID" header="Season"></column>
+        <column field="PTS" header="PTS">
+          <template #body="slotProps">
+            {{ getSeasonAverage(slotProps.data["PTS"], slotProps.data["GP"]) }}
+          </template>
+        </column>
+        <column field="REB" header="REB">
+          <template #body="slotProps">
+            {{ getSeasonAverage(slotProps.data["REB"], slotProps.data["GP"]) }}
+          </template>
+        </column>
+        <column field="AST" header="AST">
+          <template #body="slotProps">
+            {{ getSeasonAverage(slotProps.data["AST"], slotProps.data["GP"]) }}
+          </template>
+        </column>
+        <column field="STL" header="STL">
+          <template #body="slotProps">
+            {{ getSeasonAverage(slotProps.data["STL"], slotProps.data["GP"]) }}
+          </template>
+        </column>
+        <column field="BLK" header="BLK">
+          <template #body="slotProps">
+            {{ getSeasonAverage(slotProps.data["BLK"], slotProps.data["GP"]) }}
+          </template>
+        </column>
+        <column field="FG_PCT" header="FG%"></column>
+        <column field="FG3_PCT" header="3P%"></column>
+        <column field="FT_PCT" header="FT%"></column>
       </DataTable>
 
       <div class="load-button-container">
         <ProgressSpinner v-if="hideLoadMore" style="width: 50px; height: 50px" />
-        <Button @click="loadMore" v-else>Load More</Button>
+        <Button @click="loadMore" v-if="!loadMoreClicked && seasonStats.length > 3">View All</Button>
       </div>
-    </div> -->
+    </div>
   </Dialog>
 </template>
 
