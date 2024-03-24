@@ -10,8 +10,11 @@ import nba_api.stats.static.teams as teams
 # Create your views here.
 # request --> response
 
-def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
-    stat_leaders = LeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation=stat_category_abbreviation)
+def getLeagueLeaders(request, stat_category_abbreviation="PTS", per_mode="PerGame"):
+    only_total_stats = ["FG_PCT", "FG3_PCT", "FT_PCT"]
+    if stat_category_abbreviation in only_total_stats:
+        per_mode = "Totals"
+    stat_leaders = LeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation=stat_category_abbreviation, per_mode48=per_mode)
     df = stat_leaders.get_data_frames()[0]
     return HttpResponse(df.to_json(orient='records'))
 
