@@ -119,13 +119,13 @@ function clearFilters() {
           />
         </div>
       </div>
-      <button class="minimise-box" @click="showTeams = !showTeams">^</button>
+      <!-- <button class="minimise-box" @click="showTeams = !showTeams">^</button> -->
     </div>
   </Transition>
 
   <div class="filter-box" v-if="teamsSelected.length > 0">
     <div class="filter-logo-container" v-for="team in teamsSelected">
-      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)">x</button>
+      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)"><p>x</p></button>
       <img
         :src="getTeamLogo(team)"
         onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
@@ -196,7 +196,6 @@ function clearFilters() {
 </template>
 
 <style scoped>
-
 .fade-container-enter-from,
 .fade-container-leave-to {
   transform: translateY(-20px);
@@ -224,7 +223,7 @@ function clearFilters() {
   gap: 2rem;
   background-color: #9fa8da;
   border-radius: 12px;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem;
   margin-top: 0.5rem;
 }
 
@@ -237,6 +236,7 @@ function clearFilters() {
   font-weight: lighter;
   border-radius: 4px;
   background-color: #8a97ee;
+  padding-top: 0.5rem;
 }
 
 .headshot-container {
@@ -270,23 +270,25 @@ function clearFilters() {
   img {
     width: 100%;
   }
-
-  .close-filter-button {
-    position: absolute;
-    right: 0;
-    font-size: 0.7rem;
-    height: 0.8rem;
-    width: 0.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ff7979;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-  }
 }
+
+
+.close-filter-button {
+  position: absolute;
+  right: 0;
+  font-size: 0.7rem;
+  height: 0.8rem;
+  width: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff7979;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding-bottom: 2px;
+}
+
 
 .filter-button {
   position: relative;
@@ -296,7 +298,6 @@ function clearFilters() {
 .filter-button:focus {
   background-color: #90caf9;
 }
-
 
 .triangle {
   width: 0;

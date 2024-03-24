@@ -43,7 +43,7 @@ function getSeasonAverage(totalStat, gamesPlayed) {
 
 <template>
   <Dialog :header="`${playerName}`" modal style="width: 80vw" @show="fetchPlayerInfo">
-    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap">
       <div class="headshot-container">
         <img
           :src="getPlayerHeadshot(playerId)"
@@ -59,40 +59,42 @@ function getSeasonAverage(totalStat, gamesPlayed) {
     </div>
     <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center" />
     <h1>Season Averages</h1>
-    <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">No data available for this player</div>
+    <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">
+      No data available for this player
+    </div>
     <div v-else class="season-average-container">
       <DataTable :value="displaySeasonStats">
-        <column field="GP" header="Games Played"></column>
+        <column field="GP" header="Games Played" sortable></column>
         <column field="TEAM_ABBREVIATION" header="Team"></column>
-        <column field="SEASON_ID" header="Season"></column>
-        <column field="PTS" header="PTS">
+        <column field="SEASON_ID" header="Season" sortable></column>
+        <column field="PTS" header="PTS" sortable>
           <template #body="slotProps">
             {{ getSeasonAverage(slotProps.data["PTS"], slotProps.data["GP"]) }}
           </template>
         </column>
-        <column field="REB" header="REB">
+        <column field="REB" header="REB" sortable>
           <template #body="slotProps">
             {{ getSeasonAverage(slotProps.data["REB"], slotProps.data["GP"]) }}
           </template>
         </column>
-        <column field="AST" header="AST">
+        <column field="AST" header="AST" sortable>
           <template #body="slotProps">
             {{ getSeasonAverage(slotProps.data["AST"], slotProps.data["GP"]) }}
           </template>
         </column>
-        <column field="STL" header="STL">
+        <column field="STL" header="STL" sortable>
           <template #body="slotProps">
             {{ getSeasonAverage(slotProps.data["STL"], slotProps.data["GP"]) }}
           </template>
         </column>
-        <column field="BLK" header="BLK">
+        <column field="BLK" header="BLK" sortable>
           <template #body="slotProps">
             {{ getSeasonAverage(slotProps.data["BLK"], slotProps.data["GP"]) }}
           </template>
         </column>
-        <column field="FG_PCT" header="FG%"></column>
-        <column field="FG3_PCT" header="3P%"></column>
-        <column field="FT_PCT" header="FT%"></column>
+        <column field="FG_PCT" header="FG%" sortable></column>
+        <column field="FG3_PCT" header="3P%" sortable></column>
+        <column field="FT_PCT" header="FT%" sortable></column>
       </DataTable>
 
       <div class="load-button-container">
