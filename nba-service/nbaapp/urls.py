@@ -2,10 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("stat-leaders/", views.getLeagueLeaders, name="stat-leaders"),
     path("stat-leaders/<str:stat_category_abbreviation>", views.getLeagueLeaders),
-    path("stat-leaders/<str:stat_category_abbreviation>/<str:per_mode>", views.getLeagueLeaders),
-
     path("player-career-stats/<str:player_id>", views.getPlayerCareerStats),
     path("player-info/<str:player_id>", views.getPlayerInfo),
     path("all-players/<str:season>", views.getAllPlayers),
