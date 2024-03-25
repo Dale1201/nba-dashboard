@@ -1,17 +1,16 @@
-<script setup>
-import { router } from "websocket";
-</script>
+<script setup></script>
 
 <template>
+  <div class="background"></div>
   <div class="content">
     <div class="actual-content">
       <div style="display: flex; gap: 1rem; align-items: center">
         <div class="nba-logo-container">
           <img src="/nba-logo.svg" alt="NBA Logo" />
         </div>
-        <h1>NBA Archives</h1>
+        <h1 class="text-shadow-text">NBA Archives</h1>
       </div>
-      <i class="tag-line">View NBA Stats: Past and Present</i>
+      <i class="tag-line text-shadow-text">View NBA Stats: Past and Present</i>
       <div style="padding: 1rem"></div>
       <div class="buttons-container">
         <router-link to="/season-stats">
@@ -26,6 +25,15 @@ import { router } from "websocket";
 </template>
 
 <style scoped>
+.background {
+  background: url("/jordan-background.webp") center/cover;
+  filter: grayscale(100%) blur(5px);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+}
+
 .content {
   display: grid;
   place-items: center;
@@ -37,9 +45,9 @@ import { router } from "websocket";
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2.5rem;
-  border-radius: 12px;
+  padding: 3rem 5rem;
   border: 1px solid;
+  box-shadow: inset 0 0 10px 0 white;
   border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
   animation: 8s rotate linear infinite;
 }
@@ -52,10 +60,10 @@ import { router } from "websocket";
   }
 }
 
-/* .tag-line {
-  font-weight: 100;
-  font-size: 0.9rem;
-} */
+.text-shadow-text {
+  text-shadow: 2px 2px black;
+
+}
 
 .buttons-container {
   display: flex;
@@ -65,6 +73,8 @@ import { router } from "websocket";
   Button {
     width: 100%;
     text-align: center;
+    /* color: white; */
+    /* text-shadow: 1px 1px black; */
   }
 }
 

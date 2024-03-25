@@ -86,6 +86,12 @@ function clearFilters() {
         </Transition>
       </Button>
       <Button class="filter-button" severity="info">
+        Active
+        <Transition name="fade-container" mode="out-in">
+          <div v-if="false" class="triangle"></div>
+        </Transition>
+      </Button>
+      <Button class="filter-button" severity="info">
         Position
         <Transition name="fade-container" mode="out-in">
           <div v-if="false" class="triangle"></div>
@@ -272,7 +278,6 @@ function clearFilters() {
   }
 }
 
-
 .close-filter-button {
   position: absolute;
   right: 0;
@@ -288,7 +293,6 @@ function clearFilters() {
   cursor: pointer;
   padding-bottom: 2px;
 }
-
 
 .filter-button {
   position: relative;
