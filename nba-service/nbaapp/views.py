@@ -6,17 +6,21 @@ from nba_api.stats.endpoints import commonallplayers
 from nba_api.stats.endpoints import commonteamroster
 from nba_api.stats.endpoints import commonplayerinfo
 import nba_api.stats.static.teams as teams
+from config import CURRENT_SEASON
 
 # Create your views here.
 # request --> response
 
 def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
     per_mode = request.GET.get('per_mode', "PerGame")
+    season = request.GET.get('season', CURRENT_SEASON)
+    season_type = request.GET.get('season_type', "Regular Season")
 
     only_total_stats = ["FG_PCT", "FG3_PCT", "FT_PCT"]
     if stat_category_abbreviation in only_total_stats:
         per_mode = "Totals"
-    stat_leaders = LeagueLeaders(season='2023-24', league_id='00', stat_category_abbreviation=stat_category_abbreviation, per_mode48=per_mode)
+
+    stat_leaders = LeagueLeaders(season=season, league_id='00', stat_category_abbreviation=stat_category_abbreviation, per_mode48=per_mode, season_type_all_star=season_type)
     df = stat_leaders.get_data_frames()[0]
     return HttpResponse(df.to_json(orient='records'))
 
