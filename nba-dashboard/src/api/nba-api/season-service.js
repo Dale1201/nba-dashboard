@@ -28,7 +28,9 @@ export default class SeasonService {
     }
 
     try {
-      const response = await ApiService.get(`stat-leaders/${stat}/Totals`);
+      const response = await ApiService.get(`stat-leaders/${stat}`, {
+        params: { per_mode: "Totals" },
+      });
       this.totalStatLeaderCache.set(stat, response.data);
       return response.data;
     } catch (error) {
