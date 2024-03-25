@@ -23,9 +23,9 @@ async function fetchStatLeaders() {
   }
 }
 
-async function handleStatChange(e) {
-  if (!e) return;
-
+async function handleStatChange(stat) {
+  if (!stat) return;
+  selectedStat.value = stat;
   fetchStatLeaders();
 }
 
@@ -41,14 +41,27 @@ const showTotal = ref(false);
       onLabel="Total"
       offLabel="Per Game"
     />
-    <SelectButton v-model="selectedStat" :options="STATS" @change="handleStatChange" />
   </div>
 
   <div style="padding: 1rem"></div>
 
-  <DataTable :value="statLeaders" paginator :rows="10" :rowsPerPageOptions="[10, 20, 50]" :key="selectedStat">
-    <column field="RANK" header="Rank"></column>
-    <column field="PLAYER" header="Player">
+  <DataTable
+    class="stat-leader-table"
+    :value="statLeaders"
+    paginator
+    :rows="10"
+    :rowsPerPageOptions="[10, 20, 50]"
+    :key="selectedStat"
+  >
+    <column field="RANK">
+      <template #header>
+        <div style="padding: 1rem">Rank</div>
+      </template>
+    </column>
+    <column field="PLAYER">
+      <template #header>
+        <div style="padding: 1rem">Player</div>
+      </template>
       <template #body="slotProps">
         <div class="player-col">
           <div class="headshot-container">
@@ -58,13 +71,21 @@ const showTotal = ref(false);
         </div>
       </template>
     </column>
-    <column field="TEAM" header="Team"></column>
+    <column field="TEAM" >
+      <template #header>
+        <div style="padding: 1rem">Team</div> </template
+    ></column>
     <column
       v-for="stat in STATS"
       :field="stat"
-      :header="stat"
       :style="{ 'background-color': stat === selectedStat && 'rgba(159, 168, 218, 0.16)' }"
+      role="stat-header"
     >
+      <template #header="slotProps">
+        <button @click="handleStatChange(slotProps.column.props.field)" class="stat-header-button">
+          {{ stat }}
+        </button>
+      </template>
     </column>
   </DataTable>
 </template>
@@ -90,5 +111,26 @@ const showTotal = ref(false);
 .headshot-container img {
   width: 100%;
   border-radius: 50%;
+}
+
+.stat-header-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+:deep(.p-datatable-table .p-datatable-thead > tr > th) {
+  padding: 0;
+}
+
+:deep(.p-datatable-table .p-column-header-content) {
+  height: 100%;
 }
 </style>

@@ -11,7 +11,7 @@ import { router } from "websocket";
         </div>
         <h1>NBA Archives</h1>
       </div>
-      <i>View NBA Stats: Past and Present</i>
+      <i class="tag-line">View NBA Stats: Past and Present</i>
       <div style="padding: 1rem"></div>
       <div class="buttons-container">
         <router-link to="/season-stats">
@@ -51,6 +51,11 @@ import { router } from "websocket";
     width: 100%;
   }
 }
+
+/* .tag-line {
+  font-weight: 100;
+  font-size: 0.9rem;
+} */
 
 .buttons-container {
   display: flex;
