@@ -41,9 +41,9 @@ def getPlayerInfo(request, player_id):
 def getAllPlayers(request):
     season = request.GET.get('season', None)
     if not season:
-        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=0, league_id='00')
+        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=0, league_id='00', timeout=120)
     else:
-        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=season)
+        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=season, timeout=120)
 
     df = common_players.get_data_frames()[0]
     return HttpResponse(df.to_json(orient='records'))
