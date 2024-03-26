@@ -8,6 +8,7 @@ import PlayerStatsModal from "./PlayerStatsModal.vue";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
+import ToggleButton from "primevue/togglebutton";
 
 const PLAYERS_PER_PAGE = 20;
 
@@ -29,6 +30,10 @@ async function onPageChange(event) {
 }
 
 const playerSearch = ref("");
+function handlePlayerSearchChange() {
+  currentPage.value = 1;
+}
+
 const displayPlayers = computed(() => {
   const indexMin = (currentPage.value - 1) * PLAYERS_PER_PAGE;
   const indexMax = currentPage.value * PLAYERS_PER_PAGE;
@@ -42,6 +47,10 @@ const displayPlayers = computed(() => {
 
   if (teamsSelected.value.length > 0) {
     res = res.filter((player) => teamsSelected.value.includes(player["TEAM_ID"]));
+  }
+
+  if (showActivePlayers.value) {
+    res = res.filter((player) => player["ROSTERSTATUS"] === 1);
   }
   return res.slice(indexMin, indexMax);
 });
@@ -65,6 +74,9 @@ function handleTeamLogoClick(teamId) {
   teamsSelected.value = [...teamsSelected.value, teamId];
 }
 
+// Active players filter logic
+const showActivePlayers = ref(true);
+
 function handleCloseFilterLogoClick(teamId) {
   teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
 }
@@ -78,6 +90,7 @@ function clearFilters() {
 <template>
   <div style="display: flex; justify-content: flex-end; gap: 2rem">
     <div style="display: flex; align-items: center; gap: 1rem">
+      <ToggleButton style="width: 6rem" v-model="showActivePlayers" onLabel="Active" offLabel="All" />
       <span>Filter By:</span>
       <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
         Teams
@@ -85,12 +98,7 @@ function clearFilters() {
           <div v-if="showTeams" class="triangle"></div>
         </Transition>
       </Button>
-      <Button class="filter-button" severity="info">
-        Active
-        <Transition name="fade-container" mode="out-in">
-          <div v-if="false" class="triangle"></div>
-        </Transition>
-      </Button>
+
       <Button class="filter-button" severity="info">
         Position
         <Transition name="fade-container" mode="out-in">
@@ -108,7 +116,7 @@ function clearFilters() {
       <InputIcon>
         <i class="pi pi-search" />
       </InputIcon>
-      <InputText v-model="playerSearch" placeholder="Search" />
+      <InputText v-model="playerSearch" placeholder="Search" @keyup="handlePlayerSearchChange"/>
     </IconField>
 
     <Button :disabled="playerSearch.length === 0 && teamsSelected.length === 0" @click="clearFilters">Clear</Button>
