@@ -6,6 +6,7 @@ from nba_api.stats.endpoints import commonallplayers
 from nba_api.stats.endpoints import commonteamroster
 from nba_api.stats.endpoints import commonplayerinfo
 import nba_api.stats.static.teams as teams
+import nba_api.stats.static.players as players
 from config import CURRENT_SEASON
 
 # Create your views here.
@@ -37,11 +38,17 @@ def getPlayerInfo(request, player_id):
     return HttpResponse(df.to_json(orient='records'))
 
 
-def getAllPlayers(request, season):
-    common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=season)
-    # transform to array of objects instead of array of arrays
+def getAllPlayers(request):
+    season = request.GET.get('season', None)
+    if not season:
+        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=0, league_id='00')
+    else:
+        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=season)
+
     df = common_players.get_data_frames()[0]
     return HttpResponse(df.to_json(orient='records'))
+    # all_players = players.get_players()
+    # return JsonResponse(all_players, safe=False)
 
 
 def getTeamRoster(request, team_id, season):

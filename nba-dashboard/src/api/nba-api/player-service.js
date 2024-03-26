@@ -1,9 +1,9 @@
 import ApiService from "../api-service";
 
 export default class PlayerService {
-  static async getPlayers(season = "2023-24") {
+  static async getPlayers() {
     try {
-      const response = await ApiService.get(`all-players/${season}`);
+      const response = await ApiService.get(`all-players/`);
       return response.data;
     } catch (error) {
       console.error("Error fetching players", error);
