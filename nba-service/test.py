@@ -29,5 +29,6 @@ import nba_api.stats.static.players as players
 # all_teams = teams.get_teams()
 # print(all_teams)
 
-players = players.get_players()
-print(players)
+# players = players.get_players()
+# print(players)
+
