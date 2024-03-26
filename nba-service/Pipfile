@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 gunicorn = "*"
 nba-api = "*"
+pandas = "*"
 
 [dev-packages]
 
