@@ -1,8 +1,14 @@
 <script setup>
 import { ref } from "vue";
 import Sidebar from "./Sidebar.vue";
+import AboutMeModal from "../AboutMeModal.vue";
 
 const sidebarExpanded = ref(true);
+
+const aboutMeModalVisible = ref(false);
+function showAboutMeModal() {
+  aboutMeModalVisible.value = true;
+}
 </script>
 
 <template>
@@ -16,7 +22,7 @@ const sidebarExpanded = ref(true);
         <Button @click="sidebarExpanded = !sidebarExpanded" icon="pi pi-bars" class="hamburger-button" />
         <h1 class="page-heading"><slot name="page-heading" /></h1>
       </div>
-      <div class="logo-container">
+      <div class="logo-container" @click="showAboutMeModal">
         <img src="/db-logo.svg" alt="about me" />
       </div>
     </div>
@@ -24,6 +30,7 @@ const sidebarExpanded = ref(true);
       <slot />
     </div>
   </div>
+  <AboutMeModal v-model:visible="aboutMeModalVisible" />
 </template>
 
 <style scoped>
