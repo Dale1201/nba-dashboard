@@ -1,17 +1,13 @@
 <script setup>
 import StatLeadersTable from "../components/StatLeadersTable.vue";
+import StatPage from "../components/layout/StatPage.vue";
 </script>
 
 <template>
-  <div class="page-content">
-    <h1>Season Leaders</h1>
+  <StatPage>
+    <template #page-heading> Season Stats </template>
     <StatLeadersTable />
-  </div>
+  </StatPage>
 </template>
 
-<style scoped>
-.page-content {
-  max-width: 1280px;
-  margin: 0 auto;
-}
-</style>
+<style scoped></style>

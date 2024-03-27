@@ -1,20 +1,16 @@
 <script setup>
 import AllPlayers from "../components/AllPlayers.vue";
+import StatPage from "../components/layout/StatPage.vue";
 </script>
 
 <template>
-  <div class="page-content">
-    <h1 style="margin-top: 0">Player Archives</h1>
+  <StatPage>
+    <template #page-heading> Player Archives </template>
 
     <AllPlayers />
     <div style="padding: 2rem"></div>
     <Button>Compare Players</Button>
-  </div>
+  </StatPage>
 </template>
 
-<style scoped>
-.page-content {
-  max-width: 1280px;
-  margin: 0 auto;
-}
-</style>
+<style scoped></style>
