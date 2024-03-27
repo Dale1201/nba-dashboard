@@ -11,15 +11,18 @@ const sidebarExpanded = ref(true);
   </Transition>
 
   <div class="page-content-wrapper" :class="{ 'margin-left-0': !sidebarExpanded }">
-    <!-- <div> -->
     <div class="header">
-      <Button @click="sidebarExpanded = !sidebarExpanded" icon="pi pi-bars" class="hamburger-button" />
-      <h1 class="page-heading"><slot name="page-heading" /></h1>
+      <div class="header-heading">
+        <Button @click="sidebarExpanded = !sidebarExpanded" icon="pi pi-bars" class="hamburger-button" />
+        <h1 class="page-heading"><slot name="page-heading" /></h1>
+      </div>
+      <div class="logo-container">
+        <img src="/db-logo.svg" alt="about me" />
+      </div>
     </div>
     <div class="page-content">
       <slot />
     </div>
-    <!-- </div> -->
   </div>
 </template>
 
@@ -30,7 +33,7 @@ const sidebarExpanded = ref(true);
   flex-direction: column;
   align-items: center;
   transition: margin-left 0.2s;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
 }
 
 .page-content {
@@ -42,9 +45,15 @@ const sidebarExpanded = ref(true);
 }
 
 .header {
-  height: 50px;
+  /* height: 50px; */
   width: 100%;
   padding-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-heading {
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -58,6 +67,14 @@ const sidebarExpanded = ref(true);
 .hamburger-button {
   background: transparent;
   color: white;
+}
+
+.logo-container {
+  width: 3rem;
+
+  img {
+    width: 100%;
+  }
 }
 
 .sidebar-enter-active,

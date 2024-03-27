@@ -12,7 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
- 
+
 #app {
   /* max-width: 1280px; */
   margin: 0 auto;
@@ -37,7 +37,6 @@ body {
     background-color: #f9f9f9;
   }
 } */
-
 
 /* a {
   font-weight: 500;
