@@ -3,7 +3,7 @@ import { ref } from "vue";
 import Sidebar from "./Sidebar.vue";
 import AboutMeModal from "../AboutMeModal.vue";
 
-const sidebarExpanded = ref(true);
+const sidebarExpanded = ref(false);
 
 const aboutMeModalVisible = ref(false);
 function showAboutMeModal() {

@@ -27,7 +27,7 @@ def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
 
 
 def getPlayerCareerStats(request, player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, per_mode36="PerGame")
     df = player_stats.get_data_frames()[0]
     return HttpResponse(df.to_json(orient='records'))
 

@@ -88,8 +88,8 @@ function clearFilters() {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: flex-end; gap: 2rem">
-    <div style="display: flex; align-items: center; gap: 1rem">
+  <div style="display: flex; justify-content: flex-end; gap: 2rem;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
       <ToggleButton style="width: 6rem" v-model="showActivePlayers" onLabel="Active" offLabel="All" />
       <span>Filter By:</span>
       <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
@@ -99,7 +99,7 @@ function clearFilters() {
         </Transition>
       </Button>
 
-      <Button class="filter-button" severity="info">
+      <!-- <Button class="filter-button" severity="info">
         Position
         <Transition name="fade-container" mode="out-in">
           <div v-if="false" class="triangle"></div>
@@ -110,7 +110,7 @@ function clearFilters() {
         <Transition name="fade-container" mode="out-in">
           <div v-if="false" class="triangle"></div>
         </Transition>
-      </Button>
+      </Button> -->
     </div>
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
