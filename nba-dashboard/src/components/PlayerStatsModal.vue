@@ -35,10 +35,6 @@ const loadMoreClicked = ref(false);
 async function loadMore() {
   loadMoreClicked.value = true;
 }
-
-function getSeasonAverage(totalStat, gamesPlayed) {
-  return (totalStat / gamesPlayed).toFixed(1);
-}
 </script>
 
 <template>
@@ -69,27 +65,27 @@ function getSeasonAverage(totalStat, gamesPlayed) {
         <column field="SEASON_ID" header="Season" sortable></column>
         <column field="PTS" header="PTS" sortable>
           <template #body="slotProps">
-            {{ getSeasonAverage(slotProps.data["PTS"], slotProps.data["GP"]) }}
+            {{ slotProps.data["PTS"] }}
           </template>
         </column>
         <column field="REB" header="REB" sortable>
           <template #body="slotProps">
-            {{ getSeasonAverage(slotProps.data["REB"], slotProps.data["GP"]) }}
+            {{ slotProps.data["REB"] }}
           </template>
         </column>
         <column field="AST" header="AST" sortable>
           <template #body="slotProps">
-            {{ getSeasonAverage(slotProps.data["AST"], slotProps.data["GP"]) }}
+            {{ slotProps.data["AST"] }}
           </template>
         </column>
         <column field="STL" header="STL" sortable>
           <template #body="slotProps">
-            {{ getSeasonAverage(slotProps.data["STL"], slotProps.data["GP"]) }}
+            {{ slotProps.data["STL"] }}
           </template>
         </column>
         <column field="BLK" header="BLK" sortable>
           <template #body="slotProps">
-            {{ getSeasonAverage(slotProps.data["BLK"], slotProps.data["GP"]) }}
+            {{ slotProps.data["BLK"] }}
           </template>
         </column>
         <column field="FG_PCT" header="FG%" sortable></column>
