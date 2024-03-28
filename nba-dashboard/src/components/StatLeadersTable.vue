@@ -36,19 +36,33 @@ async function handleStatChange(stat) {
   selectedStat.value = stat;
   fetchStatLeaders();
 }
+const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
 
 const showPlayoffLeaders = ref(false);
+const seasonModes = [
+  { label: "Regular Season", value: "Regular Season" },
+  { label: "Playoffs", value: "Playoffs" },
+];
+const selectedSeasonMode = ref({ label: "Regular Season", value: "Regular Season" });
 
-const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
+function handleSeasonModeChange() {
+  if (selectedSeasonMode.value.value === "Playoffs") {
+    showPlayoffLeaders.value = true;
+  } else {
+    showPlayoffLeaders.value = false;
+  }
+  fetchStatLeaders();
+}
 </script>
 
 <template>
   <div class="table-options-container">
-    <ToggleButton
-      v-model="showPlayoffLeaders"
-      @change="fetchStatLeaders"
-      onLabel="Playoffs"
-      offLabel="Regular Season"
+    <Dropdown
+      style="width: 12rem"
+      v-model="selectedSeasonMode"
+      :options="seasonModes"
+      option-label="label"
+      @change="handleSeasonModeChange"
     />
     <Dropdown style="width: 10rem" v-model="selectedSeason" :options="NBA_SEASONS_YEARS" @change="fetchStatLeaders" />
   </div>
@@ -68,6 +82,7 @@ const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
         <div style="padding: 1rem">Rank</div>
       </template>
     </column>
+
     <column field="PLAYER">
       <template #header>
         <div style="padding: 1rem">Player</div>
