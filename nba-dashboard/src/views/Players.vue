@@ -9,7 +9,7 @@ import StatPage from "../components/layout/StatPage.vue";
 
     <AllPlayers />
     <div style="padding: 2rem"></div>
-    <Button>Compare Players</Button>
+    <!-- <Button>Compare Players</Button> -->
   </StatPage>
 </template>
 
