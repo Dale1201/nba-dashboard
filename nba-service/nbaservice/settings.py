@@ -32,11 +32,11 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = "access-control-allow-origin"
-CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-#     "https://nba-dashboard-jxkcl.ondigitalocean.app"
-# ]
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://nba-dashboard-jxkcl.ondigitalocean.app"
+]
 
 CORS_ALLOW_METHODS = [
     'DELETE',
