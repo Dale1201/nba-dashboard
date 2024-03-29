@@ -9,14 +9,16 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import ToggleButton from "primevue/togglebutton";
+import ProgressSpinner from "primevue/progressspinner";
 
 const PLAYERS_PER_PAGE = 20;
 
 const players = ref([]);
 const teams = ref("");
+const isLoading = ref(true);
 onMounted(async () => {
-  players.value = await PlayerService.getPlayers();
   teams.value = await TeamService.getTeams();
+  players.value = await PlayerService.getPlayers().finally(() => (isLoading.value = false));
 });
 
 // Paginator logic
@@ -149,7 +151,8 @@ function clearFilters() {
   </div>
 
   <div style="padding: 1rem"></div>
-  <div v-if="!displayPlayers || displayPlayers.length == 0">No Players Found</div>
+  <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center" />
+  <div v-else-if="displayPlayers.length == 0">No Players Found</div>
   <div class="players" v-else>
     <div
       class="player"

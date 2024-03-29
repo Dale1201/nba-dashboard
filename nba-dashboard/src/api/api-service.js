@@ -5,10 +5,10 @@ export default class ApiService {
   static initialise() {
     this.api = axios.create({
       baseURL: "https://nba-service-2ts5y.ondigitalocean.app/nbaapp",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET PUT POST DELETE",
-      },
+      // headers: {
+      //   "Access-Control-Allow-Origin": "*",
+      //   "Access-Control-Allow-Methods": "GET PUT POST DELETE",
+      // },
     });
   }
 
