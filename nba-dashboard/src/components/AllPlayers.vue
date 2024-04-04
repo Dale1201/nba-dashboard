@@ -61,8 +61,8 @@ const displayPlayers = computed(() => {
 const selectedPlayer = ref({});
 const isPlayerStatsModalVisible = ref(false);
 function togglePlayerStatsModal(player) {
-  selectedPlayer.value = player;
-  isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
+  // selectedPlayer.value = player;
+  // isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
 }
 
 const showTeams = ref(false);
@@ -168,6 +168,7 @@ function clearFilters() {
         />
       </div>
       <div>{{ player["DISPLAY_FIRST_LAST"] }}</div>
+      <div>{{ player['PERSON_ID'] }}</div>
     </div>
   </div>
   <div style="padding: 2rem"></div>

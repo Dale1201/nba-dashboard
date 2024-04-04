@@ -4,7 +4,7 @@ import axios from "axios";
 export default class ApiService {
   static initialise() {
     this.api = axios.create({
-      baseURL: "https://nba-service-2ts5y.ondigitalocean.app/nbaapp",
+      baseURL: "http://127.0.0.1:8000/nbaapp",
       // headers: {
       //   "Access-Control-Allow-Origin": "*",
       //   "Access-Control-Allow-Methods": "GET PUT POST DELETE",
