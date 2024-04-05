@@ -3,16 +3,24 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
 import STATS from "../utils/constants/stats";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import SeasonService from "../api/nba-api/season-service";
-import ToggleButton from "primevue/togglebutton";
-import NBA_SEASONS_YEARS from "../utils/constants/nba-seasons";
 import Dropdown from "primevue/dropdown";
 import ProgressSpinner from "primevue/progressspinner";
+
+const props = defineProps(["selectedSeason"]);
+
+watch(
+  () => props.selectedSeason,
+  () => {
+    fetchStatLeaders();
+  }
+);
 
 const selectedStat = ref("PTS");
 const statLeaders = ref([]);
 const fetchingData = ref(false);
+
 onMounted(async () => {
   fetchingData.value = true;
   statLeaders.value = await SeasonService.getRegStatLeaders(selectedStat.value);
@@ -24,19 +32,20 @@ async function fetchStatLeaders() {
 
   fetchingData.value = true;
   if (showPlayoffLeaders.value) {
-    statLeaders.value = await SeasonService.getPlayoffsStatLeaders(selectedStat.value, selectedSeason.value);
+    statLeaders.value = await SeasonService.getPlayoffsStatLeaders(selectedStat.value, props.selectedSeason);
   } else {
-    statLeaders.value = await SeasonService.getRegStatLeaders(selectedStat.value, selectedSeason.value);
+    statLeaders.value = await SeasonService.getRegStatLeaders(selectedStat.value, props.selectedSeason);
   }
   fetchingData.value = false;
 }
+
+
 
 async function handleStatChange(stat) {
   if (!stat) return;
   selectedStat.value = stat;
   fetchStatLeaders();
 }
-const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
 
 const showPlayoffLeaders = ref(false);
 const seasonModes = [
@@ -64,7 +73,6 @@ function handleSeasonModeChange() {
       option-label="label"
       @change="handleSeasonModeChange"
     />
-    <Dropdown style="width: 10rem" v-model="selectedSeason" :options="NBA_SEASONS_YEARS" @change="fetchStatLeaders" />
   </div>
   <div style="padding: 1rem"></div>
 

@@ -64,10 +64,10 @@ def getAllTeams(request):
 
 def getAwardWinners(request):
     award_winners_path = 'C:\\Users\\Dale\\Documents\\Projects\\nba-dashboard\\nba-service\\util\\award_winners.json'
-    year = request.GET.get('year', None)
+    season = request.GET.get('season', None)
     with open(award_winners_path, 'r') as f:
         data = json.load(f)
 
-    if year:
-        data = [x for x in data if x['year'] == year]
+    if season:
+        data = [x for x in data if x['year'] == season]
     return JsonResponse(data, safe=False)

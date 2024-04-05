@@ -46,4 +46,16 @@ export default class SeasonService {
       console.error("Error fetching stat leaders", error);
     }
   }
+
+  static async getAwardWinners(season) {
+    try {
+      const response = await ApiService.get("award-winners", {
+        params: { season },
+      });
+      ;
+      return response.data.length > 0 ? response.data[0].awards : null;
+    } catch (error) {
+      console.error("Error fetching award winners", error);
+    }
+  }
 }

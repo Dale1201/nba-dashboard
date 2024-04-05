@@ -61,8 +61,8 @@ const displayPlayers = computed(() => {
 const selectedPlayer = ref({});
 const isPlayerStatsModalVisible = ref(false);
 function togglePlayerStatsModal(player) {
-  // selectedPlayer.value = player;
-  // isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
+  selectedPlayer.value = player;
+  isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
 }
 
 const showTeams = ref(false);
@@ -90,8 +90,8 @@ function clearFilters() {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: flex-end; gap: 2rem;">
-    <div style="display: flex; align-items: center; gap: 1rem;">
+  <div style="display: flex; justify-content: flex-end; gap: 2rem">
+    <div style="display: flex; align-items: center; gap: 1rem">
       <ToggleButton style="width: 6rem" v-model="showActivePlayers" onLabel="Active" offLabel="All" />
       <span>Filter By:</span>
       <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
@@ -100,25 +100,12 @@ function clearFilters() {
           <div v-if="showTeams" class="triangle"></div>
         </Transition>
       </Button>
-
-      <!-- <Button class="filter-button" severity="info">
-        Position
-        <Transition name="fade-container" mode="out-in">
-          <div v-if="false" class="triangle"></div>
-        </Transition>
-      </Button>
-      <Button class="filter-button" severity="info">
-        Height
-        <Transition name="fade-container" mode="out-in">
-          <div v-if="false" class="triangle"></div>
-        </Transition>
-      </Button> -->
     </div>
     <IconField iconPosition="left" style="width: fit-content">
       <InputIcon>
         <i class="pi pi-search" />
       </InputIcon>
-      <InputText v-model="playerSearch" placeholder="Search" @keyup="handlePlayerSearchChange"/>
+      <InputText v-model="playerSearch" placeholder="Search" @keyup="handlePlayerSearchChange" />
     </IconField>
 
     <Button :disabled="playerSearch.length === 0 && teamsSelected.length === 0" @click="clearFilters">Clear</Button>
@@ -135,7 +122,6 @@ function clearFilters() {
           />
         </div>
       </div>
-      <!-- <button class="minimise-box" @click="showTeams = !showTeams">^</button> -->
     </div>
   </Transition>
 
@@ -168,7 +154,6 @@ function clearFilters() {
         />
       </div>
       <div>{{ player["DISPLAY_FIRST_LAST"] }}</div>
-      <div>{{ player['PERSON_ID'] }}</div>
     </div>
   </div>
   <div style="padding: 2rem"></div>
