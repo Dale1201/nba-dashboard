@@ -1,0 +1,710 @@
+[
+  {
+    "year": "2022-23",
+    "awards": {
+      "MVP": "Joel Embiid",
+      "DPOY": "Jaren Jackson Jr.",
+      "ROY": "Paolo Banchero",
+      "6MOY": "Malcolm Brogdon",
+      "MIP": "Lauri Markkanen",
+      "COY": "Mike Brown",
+      "FMVP": "Nikola Jokic",
+      "ASG MVP": "Jayson Tatum"
+    }
+  },
+  {
+    "year": "2021-22",
+    "awards": {
+      "MVP": "Nikola Jokic",
+      "DPOY": "Marcus Smart",
+      "ROY": "Scottie Barnes",
+      "6MOY": "Tyler Herro",
+      "MIP": "Ja Morant",
+      "COY": "Monty Williams",
+      "FMVP": "Stephen Curry",
+      "ASG MVP": "Stephen Curry"
+    }
+  },
+  {
+    "year": "2020-21",
+    "awards": {
+      "MVP": "Nikola Jokic",
+      "DPOY": "Rudy Gobert",
+      "ROY": "LaMelo Ball",
+      "6MOY": "Jordan Clarkson",
+      "MIP": "Julius Randle",
+      "COY": "Tom Thibodeau",
+      "FMVP": "Giannis Antetokounmpo",
+      "ASG MVP": "Giannis Antetokounmpo"
+    }
+  },
+  {
+    "year": "2019-20",
+    "awards": {
+      "MVP": "Giannis Antetokounmpo",
+      "DPOY": "Giannis Antetokounmpo",
+      "ROY": "Ja Morant",
+      "6MOY": "Montrezl Harrell",
+      "MIP": "Brandon Ingram",
+      "COY": "Nick Nurse",
+      "FMVP": "LeBron James",
+      "ASG MVP": "Kawhi Leonard"
+    }
+  },
+  {
+    "year": "2018-19",
+    "awards": {
+      "MVP": "Giannis Antetokounmpo",
+      "DPOY": "Rudy Gobert",
+      "ROY": "Luka Doncic",
+      "6MOY": "Lou Williams",
+      "MIP": "Pascal Siakam",
+      "COY": "Mike Budenholzer",
+      "FMVP": "Kawhi Leonard",
+      "ASG MVP": "Kevin Durant"
+    }
+  },
+  {
+    "year": "2017-18",
+    "awards": {
+      "MVP": "James Harden",
+      "DPOY": "Rudy Gobert",
+      "ROY": "Ben Simmons",
+      "6MOY": "Lou Williams",
+      "MIP": "Victor Oladipo",
+      "COY": "Dwane Casey",
+      "FMVP": "Kevin Durant",
+      "ASG MVP": "LeBron James"
+    }
+  },
+  {
+    "year": "2016-17",
+    "awards": {
+      "MVP": "Russell Westbrook",
+      "DPOY": "Draymond Green",
+      "ROY": "Malcolm Brogdon",
+      "6MOY": "Eric Gordon",
+      "MIP": "Giannis Antetokounmpo",
+      "COY": "Mike D'Antoni",
+      "FMVP": "Kevin Durant",
+      "ASG MVP": "Anthony Davis"
+    }
+  },
+  {
+    "year": "2015-16",
+    "awards": {
+      "MVP": "Stephen Curry",
+      "DPOY": "Kawhi Leonard",
+      "ROY": "Karl-Anthony Towns",
+      "6MOY": "Jamal Crawford",
+      "MIP": "CJ McCollum",
+      "COY": "Steve Kerr",
+      "FMVP": "LeBron James",
+      "ASG MVP": "Russell Westbrook"
+    }
+  },
+  {
+    "year": "2014-15",
+    "awards": {
+      "MVP": "Stephen Curry",
+      "DPOY": "Kawhi Leonard",
+      "ROY": "Andrew Wiggins",
+      "6MOY": "Lou Williams",
+      "MIP": "Jimmy Butler",
+      "COY": "Mike Budenholzer",
+      "FMVP": "Andre Iguodala",
+      "ASG MVP": "Russell Westbrook"
+    }
+  },
+  {
+    "year": "2013-14",
+    "awards": {
+      "MVP": "Kevin Durant",
+      "DPOY": "Joakim Noah",
+      "ROY": "Michael Carter-Williams",
+      "6MOY": "Jamal Crawford",
+      "MIP": "Goran Dragic",
+      "COY": "Gregg Popovich",
+      "FMVP": "Kawhi Leonard",
+      "ASG MVP": "Kyrie Irving"
+    }
+  },
+  {
+    "year": "2012-13",
+    "awards": {
+      "MVP": "LeBron James",
+      "DPOY": "Marc Gasol",
+      "ROY": "Damian Lillard",
+      "6MOY": "JR Smith",
+      "MIP": "Paul George",
+      "COY": "George Karl",
+      "FMVP": "LeBron James",
+      "ASG MVP": "Chris Paul"
+    }
+  },
+  {
+    "year": "2011-12",
+    "awards": {
+      "MVP": "LeBron James",
+      "DPOY": "Tyson Chandler",
+      "ROY": "Kyrie Irving",
+      "6MOY": "James Harden",
+      "MIP": "Ryan Anderson",
+      "COY": "Gregg Popovich",
+      "FMVP": "LeBron James",
+      "ASG MVP": "Kevin Durant"
+    }
+  },
+  {
+    "year": "2010-11",
+    "awards": {
+      "MVP": "Derrick Rose",
+      "DPOY": "Dwight Howard",
+      "ROY": "Blake Griffin",
+      "6MOY": "Lamar Odom",
+      "MIP": "Kevin Love",
+      "COY": "Tom Thibodeau",
+      "FMVP": "Dirk Nowitzki",
+      "ASG MVP": "Kobe Bryant"
+    }
+  },
+  {
+    "year": "2009-10",
+    "awards": {
+      "MVP": "LeBron James",
+      "DPOY": "Dwight Howard",
+      "ROY": "Tyreke Evans",
+      "6MOY": "Jamal Crawford",
+      "MIP": "Aaron Brooks",
+      "COY": "Scott Brooks",
+      "FMVP": "Kobe Bryant",
+      "ASG MVP": "Dwyane Wade"
+    }
+  },
+  {
+    "year": "2008-09",
+    "awards": {
+      "MVP": "LeBron James",
+      "DPOY": "Dwight Howard",
+      "ROY": "Derrick Rose",
+      "6MOY": "Jason Terry",
+      "MIP": "Danny Granger",
+      "COY": "Mike Brown",
+      "FMVP": "Kobe Bryant",
+      "ASG MVP": "Kobe Bryant"
+    }
+  },
+  {
+    "year": "2007-08",
+    "awards": {
+      "MVP": "Kobe Bryant",
+      "DPOY": "Kevin Garnett",
+      "ROY": "Kevin Durant",
+      "6MOY": "Manu Ginobili",
+      "MIP": "Hedo Turkoglu",
+      "COY": "Byron Scott",
+      "FMVP": "Paul Pierce",
+      "ASG MVP": "LeBron James"
+    }
+  },
+  {
+    "year": "2006-07",
+    "awards": {
+      "MVP": "Dirk Nowitzki",
+      "DPOY": "Marcus Camby",
+      "ROY": "Brandon Roy",
+      "6MOY": "Leandro Barbosa",
+      "MIP": "Monta Ellis",
+      "COY": "Sam Mitchell",
+      "FMVP": "Tony Parker",
+      "ASG MVP": "Kobe Bryant"
+    }
+  },
+  {
+    "year": "2005-06",
+    "awards": {
+      "MVP": "Steve Nash",
+      "DPOY": "Ben Wallace",
+      "ROY": "Chris Paul",
+      "6MOY": "Mike Miller",
+      "MIP": "Boris Diaw",
+      "COY": "Avery Johnson",
+      "FMVP": "Dwyane Wade",
+      "ASG MVP": "LeBron James"
+    }
+  },
+  {
+    "year": "2004-05",
+    "awards": {
+      "MVP": "Steve Nash",
+      "DPOY": "Ben Wallace",
+      "ROY": "Emeka Okafor",
+      "6MOY": "Ben Gordon",
+      "MIP": "Bobby Simmons",
+      "COY": "Mike D'Antoni",
+      "FMVP": "Tim Duncan",
+      "ASG MVP": "Allen Iverson"
+    }
+  },
+  {
+    "year": "2003-04",
+    "awards": {
+      "MVP": "Kevin Garnett",
+      "DPOY": "Metta World Peace",
+      "ROY": "LeBron James",
+      "6MOY": "Antawn Jamison",
+      "MIP": "Zach Randolph",
+      "COY": "Hubie Brown",
+      "FMVP": "Chauncey Billups",
+      "ASG MVP": "Shaquille O'Neal"
+    }
+  },
+  {
+    "year": "2002-03",
+    "awards": {
+      "MVP": "Tim Duncan",
+      "DPOY": "Ben Wallace",
+      "ROY": "Amar'e Stoudemire",
+      "6MOY": "Bobby Jackson",
+      "MIP": "Gilbert Arenas",
+      "COY": "Gregg Popovich",
+      "FMVP": "Tim Duncan",
+      "ASG MVP": "Kevin Garnett"
+    }
+  },
+  {
+    "year": "2001-02",
+    "awards": {
+      "MVP": "Tim Duncan",
+      "DPOY": "Ben Wallace",
+      "ROY": "Pau Gasol",
+      "6MOY": "Corliss Williamson",
+      "MIP": "Jermaine O'Neal",
+      "COY": "Rick Carlisle",
+      "FMVP": "Shaquille O'Neal",
+      "ASG MVP": "Kobe Bryant"
+    }
+  },
+  {
+    "year": "2000-01",
+    "awards": {
+      "MVP": "Allen Iverson",
+      "DPOY": "Dikembe Mutombo",
+      "ROY": "Mike Miller",
+      "6MOY": "Aaron McKie",
+      "MIP": "Tracy McGrady",
+      "COY": "Larry Brown",
+      "FMVP": "Shaquille O'Neal",
+      "ASG MVP": "Allen Iverson"
+    }
+  },
+  {
+    "year": "1999-00",
+    "awards": {
+      "MVP": "Shaquille O'Neal",
+      "DPOY": "Alonzo Mourning",
+      "ROY": "Elton Brand",
+      "6MOY": "Rodney Rogers",
+      "MIP": "Jalen Rose",
+      "COY": "Doc Rivers",
+      "FMVP": "Shaquille O'Neal",
+      "ASG MVP": "Tim Duncan"
+    }
+  },
+  {
+    "year": "1998-99",
+    "awards": {
+      "MVP": "Karl Malone",
+      "DPOY": "Alonzo Mourning",
+      "ROY": "Vince Carter",
+      "6MOY": "Darrel Armstrong",
+      "MIP": "Darrel Armstrong",
+      "COY": "Mike Dunleavy",
+      "FMVP": "Tim Duncan"
+    }
+  },
+  {
+    "year": "1997-98",
+    "awards": {
+      "MVP": "Michael Jordan",
+      "DPOY": "Dikembe Mutombo",
+      "ROY": "Tim Duncan",
+      "6MOY": "Danny Manning",
+      "MIP": "Alan Henderson",
+      "COY": "Larry Bird",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Michael Jordan"
+    }
+  },
+  {
+    "year": "1996-97",
+    "awards": {
+      "MVP": "Karl Malone",
+      "DPOY": "Dikembe Mutombo",
+      "ROY": "Allen Iverson",
+      "6MOY": "John Starks",
+      "MIP": "Isaac Austin",
+      "COY": "Pat Riley",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Glen Rice"
+    }
+  },
+  {
+    "year": "1995-96",
+    "awards": {
+      "MVP": "Michael Jordan",
+      "DPOY": "Gary Payton",
+      "ROY": "Damon Stoudamire",
+      "6MOY": "Toni Kukoc",
+      "MIP": "Gheorghe Muresan",
+      "COY": "Phil Jackson",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Michael Jordan"
+    }
+  },
+  {
+    "year": "1994-95",
+    "awards": {
+      "MVP": "David Robinson",
+      "DPOY": "Dikembe Mutombo",
+      "ROY": "Grant Hill",
+      "6MOY": "Anthony Mason",
+      "MIP": "Dana Barros",
+      "COY": "Del Harris",
+      "FMVP": "Hakeem Olajuwon",
+      "ASG MVP": "Mitch Richmond"
+    }
+  },
+  {
+    "year": "1993-94",
+    "awards": {
+      "MVP": "Hakeem Olajuwon",
+      "DPOY": "Hakeem Olajuwon",
+      "ROY": "Chris Webber",
+      "6MOY": "Dell Curry",
+      "MIP": "Don Maclean",
+      "COY": "Lenny Wilkens",
+      "FMVP": "Hakeem Olajuwon",
+      "ASG MVP": "Scottie Pippen"
+    }
+  },
+  {
+    "year": "1992-93",
+    "awards": {
+      "MVP": "Charles Barkley",
+      "DPOY": "Hakeem Olajuwon",
+      "ROY": "Shaquille O'Neal",
+      "6MOY": "Clifford Robinson",
+      "MIP": "Mahmoud Abdul-Rauf",
+      "COY": "Pat Riley",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Karl Malone"
+    }
+  },
+  {
+    "year": "1991-92",
+    "awards": {
+      "MVP": "Michael Jordan",
+      "DPOY": "David Robinson",
+      "ROY": "Larry Johnson",
+      "6MOY": "Detlef Schrempf",
+      "MIP": "Pervis Ellison",
+      "COY": "Don Nelson",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Magic Johnson"
+    }
+  },
+  {
+    "year": "1990-91",
+    "awards": {
+      "MVP": "Michael Jordan",
+      "DPOY": "Dennis Rodman",
+      "ROY": "Derrick Coleman",
+      "6MOY": "Detlef Schrempf",
+      "MIP": "Scott Skiles",
+      "COY": "Don Chaney",
+      "FMVP": "Michael Jordan",
+      "ASG MVP": "Charles Barkley"
+    }
+  },
+  {
+    "year": "1989-90",
+    "awards": {
+      "MVP": "Magic Johnson",
+      "DPOY": "Dennis Rodman",
+      "ROY": "David Robinson",
+      "6MOY": "Ricky Pierce",
+      "MIP": "Rony Seikaly",
+      "COY": "Pat Riley",
+      "FMVP": "Isiah Thomas",
+      "ASG MVP": "Magic Johnson"
+    }
+  },
+  {
+    "year": "1988-89",
+    "awards": {
+      "MVP": "Magic Johnson",
+      "DPOY": "Mark Eaton",
+      "ROY": "Mitch Richmond",
+      "6MOY": "Eddie Johnson",
+      "MIP": "Kevin Johnson",
+      "COY": "Cotton Fitzsimmons",
+      "FMVP": "Joe Dumars",
+      "ASG MVP": "Karl Malone"
+    }
+  },
+  {
+    "year": "1987-88",
+    "awards": {
+      "MVP": "Michael Jordan",
+      "DPOY": "Michael Jordan",
+      "ROY": "Mark Jackson",
+      "6MOY": "Roy Tarpley",
+      "MIP": "Kevin Duckworth",
+      "COY": "Doug Moe",
+      "FMVP": "James Worthy",
+      "ASG MVP": "Michael Jordan"
+    }
+  },
+  {
+    "year": "1986-87",
+    "awards": {
+      "MVP": "Magic Johnson",
+      "DPOY": "Michael Cooper",
+      "ROY": "Chuck Person",
+      "6MOY": "Ricky Pierce",
+      "MIP": "Dale Ellis",
+      "COY": "Mike Schuler",
+      "FMVP": "Magic Johnson",
+      "ASG MVP": "Tom Chambers"
+    }
+  },
+  {
+    "year": "1985-86",
+    "awards": {
+      "MVP": "Larry Bird",
+      "DPOY": "Alvin Robertson",
+      "ROY": "Patrick Ewing",
+      "6MOY": "Bill Walton",
+      "MIP": "Alvin Robertson",
+      "COY": "Mike Fratello",
+      "FMVP": "Larry Bird",
+      "ASG MVP": "Isiah Thomas"
+    }
+  },
+  {
+    "year": "1984-85",
+    "awards": {
+      "MVP": "Larry Bird",
+      "DPOY": "Mark Eaton",
+      "ROY": "Michael Jordan",
+      "6MOY": "Kevin McHale",
+      "COY": "Don Nelson",
+      "FMVP": "Kareem Abdul-Jabbar",
+      "ASG MVP": "Ralph Sampson"
+    }
+  },
+  {
+    "year": "1983-84",
+    "awards": {
+      "MVP": "Larry Bird",
+      "DPOY": "Sidney Moncrief",
+      "ROY": "Ralph Sampson",
+      "6MOY": "Kevin McHale",
+      "COY": "Frank Layden",
+      "FMVP": "Larry Bird",
+      "ASG MVP": "Isiah Thomas"
+    }
+  },
+  {
+    "year": "1982-83",
+    "awards": {
+      "MVP": "Moses Malone",
+      "DPOY": "Sidney Moncrief",
+      "ROY": "Terry Cummings",
+      "6MOY": "Bobby Jones",
+      "COY": "Don Nelson",
+      "FMVP": "Moses Malone",
+      "ASG MVP": "Julius Erving"
+    }
+  },
+  {
+    "year": "1981-82",
+    "awards": {
+      "MVP": "Moses Malone",
+      "ROY": "Buck Williams",
+      "COY": "Eugene Shue",
+      "FMVP": "Magic Johnson",
+      "ASG MVP": "Larry Bird"
+    }
+  },
+  {
+    "year": "1980-81",
+    "awards": {
+      "MVP": "Julius Erving",
+      "ROY": "Darrell Griffith",
+      "COY": "Jack McKinney",
+      "FMVP": "Cedric Maxwell",
+      "ASG MVP": "Nathaniel Archibald"
+    }
+  },
+  {
+    "year": "1979-80",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "Larry Bird",
+      "COY": "Bill Fitch",
+      "FMVP": "Magic Johnson",
+      "ASG MVP": "George Gervin"
+    }
+  },
+  {
+    "year": "1978-79",
+    "awards": {
+      "MVP": "Moses Malone",
+      "ROY": "Phil Ford",
+      "COY": "Cotton Fitzsimmons",
+      "FMVP": "Dennis Johnson",
+      "ASG MVP": "David Thompson"
+    }
+  },
+  {
+    "year": "1977-78",
+    "awards": {
+      "MVP": "Bill Walton",
+      "ROY": "Walt Davis",
+      "COY": "Hubie Brown",
+      "FMVP": "Wes Unseld",
+      "ASG MVP": "Edward Smith"
+    }
+  },
+  {
+    "year": "1976-77",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "Adrian Dantley",
+      "COY": "Tom Nissalke",
+      "FMVP": "Bill Walton",
+      "ASG MVP": "Julius Erving"
+    }
+  },
+  {
+    "year": "1975-76",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "Alvan Adams",
+      "COY": "Bill Fitch",
+      "FMVP": "Joe White",
+      "ASG MVP": "Dave Bing"
+    }
+  },
+  {
+    "year": "1974-75",
+    "awards": {
+      "MVP": "Bob McAdoo",
+      "ROY": "Jamaal Wilkes",
+      "COY": "Phil Johnson",
+      "FMVP": "Rick Barry",
+      "ASG MVP": "Walter Frazier"
+    }
+  },
+  {
+    "year": "1973-74",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "Ernie Digregorio",
+      "COY": "Ray Scott",
+      "FMVP": "John Havlicek",
+      "ASG MVP": "Bob Lanier"
+    }
+  },
+  {
+    "year": "1972-73",
+    "awards": {
+      "MVP": "David Cowens",
+      "ROY": "Bob McAdoo",
+      "COY": "Tommy Heinsohn",
+      "FMVP": "Willis Reed",
+      "ASG MVP": "David Cowens"
+    }
+  },
+  {
+    "year": "1971-72",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "Sidney Wicks",
+      "COY": "Bill Sharman",
+      "FMVP": "Wilt Chamberlain",
+      "ASG MVP": "Jerry West"
+    }
+  },
+  {
+    "year": "1970-71",
+    "awards": {
+      "MVP": "Kareem Abdul-Jabbar",
+      "ROY": "David Cowens",
+      "COY": "Dick Motta",
+      "FMVP": "Kareem Abdul-Jabbar",
+      "ASG MVP": "Lenny Wilkens"
+    }
+  },
+  {
+    "year": "1969-70",
+    "awards": {
+      "MVP": "Willis Reed",
+      "ROY": "Kareem Abdul-Jabbar",
+      "COY": "Red Holzman",
+      "FMVP": "Willis Reed",
+      "ASG MVP": "Willis Reed"
+    }
+  },
+  {
+    "year": "1968-69",
+    "awards": {
+      "MVP": "Wes Unseld",
+      "ROY": "Wes Unseld",
+      "COY": "Eugene Shue",
+      "FMVP": "Jerry West",
+      "ASG MVP": "Oscar Robertson"
+    }
+  },
+  {
+    "year": "1967-68",
+    "awards": { "MVP": "Wilt Chamberlain", "ROY": "Earl Monroe", "COY": "Richard Guerin", "ASG MVP": "Harold Greer" }
+  },
+  {
+    "year": "1966-67",
+    "awards": { "MVP": "Wilt Chamberlain", "ROY": "Dave Bing", "COY": "John Kerr", "ASG MVP": "Rick Barry" }
+  },
+  {
+    "year": "1965-66",
+    "awards": { "MVP": "Wilt Chamberlain", "ROY": "Rick Barry", "COY": "Adolph Schayes", "ASG MVP": "Adrian Smith" }
+  },
+  {
+    "year": "1964-65",
+    "awards": { "MVP": "Bill Russell", "ROY": "Willis Reed", "COY": "Red Auerbach", "ASG MVP": "Jerry Lucas" }
+  },
+  {
+    "year": "1963-64",
+    "awards": {
+      "MVP": "Oscar Robertson",
+      "ROY": "Jerry Lucas",
+      "COY": "Alexander Hannum",
+      "ASG MVP": "Oscar Robertson"
+    }
+  },
+  {
+    "year": "1962-63",
+    "awards": { "MVP": "Bill Russell", "ROY": "Terry Dischinger", "COY": "Harry Gallatin", "ASG MVP": "Bill Russell" }
+  },
+  { "year": "1961-62", "awards": { "MVP": "Bill Russell", "ROY": "Walt Bellamy", "ASG MVP": "Bob Pettit" } },
+  { "year": "1960-61", "awards": { "MVP": "Bill Russell", "ROY": "Oscar Robertson", "ASG MVP": "Oscar Robertson" } },
+  {
+    "year": "1959-60",
+    "awards": { "MVP": "Wilt Chamberlain", "ROY": "Wilt Chamberlain", "ASG MVP": "Wilt Chamberlain" }
+  },
+  { "year": "1958-59", "awards": { "MVP": "Bob Pettit", "ROY": "Elgin Baylor", "ASG MVP": "Elgin Baylor" } },
+  { "year": "1957-58", "awards": { "MVP": "Bill Russell", "ROY": "Woody Sauldsberry", "ASG MVP": "Bob Pettit" } },
+  { "year": "1956-57", "awards": { "MVP": "Bob Cousy", "ROY": "Tommy Heinsohn", "ASG MVP": "Bob Cousy" } },
+  { "year": "1955-56", "awards": { "MVP": "Bob Pettit", "ROY": "Maurice Stokes", "ASG MVP": "Bob Pettit" } }
+]

@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from nba_api.stats.endpoints import LeagueLeaders
@@ -59,3 +61,13 @@ def getTeamRoster(request, team_id, season):
 def getAllTeams(request):
     all_teams = teams.get_teams()
     return JsonResponse(all_teams, safe=False)
+
+def getAwardWinners(request):
+    award_winners_path = 'C:\\Users\\Dale\\Documents\\Projects\\nba-dashboard\\nba-service\\util\\award_winners.json'
+    year = request.GET.get('year', None)
+    with open(award_winners_path, 'r') as f:
+        data = json.load(f)
+
+    if year:
+        data = [x for x in data if x['year'] == year]
+    return JsonResponse(data, safe=False)

@@ -8,4 +8,5 @@ urlpatterns = [
     path("all-players/", views.getAllPlayers),
     path("team-roster/<str:team_id>/<str:season>", views.getTeamRoster),
     path("teams/", views.getAllTeams),
+    path("award-winners/", views.getAwardWinners),
 ]
