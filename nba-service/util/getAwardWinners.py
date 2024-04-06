@@ -2,6 +2,7 @@ import time
 import json
 import requests
 from bs4 import BeautifulSoup
+import nba_api.stats.static.players as players
 
 # first bath 1983 - 2023
 
@@ -48,6 +49,12 @@ years = ["2022-23", "2021-22", "2020-21", "2019-20", "2018-19", "2017-18", "2016
 
 season_award_winners = []
 
+all_players = players.get_players()
+def getPlayerId(name):
+    for player in all_players:
+        if name in player['full_name']:
+            return player['id']
+
 for year in years:
     translated_year = year.split("-")[0][:2] + year.split("-")[1]
     if year == "1999-00":
@@ -62,9 +69,10 @@ for year in years:
         if len(cells) > 1:
             award_name = cells[0].text
             award_winner = cells[1].text.split(",")[0]
+            award_winner_id = getPlayerId(award_winner)
 
             if award_name in awards_name_translation:
-                season_awards["awards"][awards_name_translation[award_name]] = award_winner
+                season_awards["awards"][awards_name_translation[award_name]] = {"player": award_winner, "player_id": award_winner_id}
 
     season_award_winners.append(season_awards)
     print(season_awards)

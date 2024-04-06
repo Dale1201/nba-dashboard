@@ -13,9 +13,11 @@ const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
   <StatPage>
     <template #page-heading> Season Stats </template>
     <div class="filter-container">
+      <b>Select a Season: </b>
       <Dropdown style="width: 10rem" v-model="selectedSeason" :options="NBA_SEASONS_YEARS" />
     </div>
-    <SeasonAwards :selectedSeason="selectedSeason" />
+    <SeasonAwards :selectedSeason="selectedSeason" v-if="selectedSeason !== NBA_SEASONS_YEARS[0]"/>
+    <div style="padding: 1rem;"></div>
     <StatLeadersTable :selectedSeason="selectedSeason" />
   </StatPage>
 </template>
@@ -24,6 +26,9 @@ const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
 .filter-container {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
   margin-bottom: 1rem;
+
 }
 </style>
