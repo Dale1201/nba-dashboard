@@ -37,7 +37,11 @@ async function fetchAwardWinners() {
       <div v-for="(winner, award) in awardWinners">
         <div v-if="visibleAwards.includes(award)" class="award-circle">
           <div class="award-headshot-container">
-            <img :src="getPlayerHeadshot(winner['player_id'])" alt="award" />
+            <img
+              :src="getPlayerHeadshot(winner['player_id'])"
+              alt="award"
+              onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+            />
           </div>
           <p>{{ winner.player }}</p>
           <h3>{{ award }}</h3>
@@ -82,7 +86,6 @@ async function fetchAwardWinners() {
   p {
     margin: 0;
     font-size: 0.8rem;
-    
   }
 }
 </style>
