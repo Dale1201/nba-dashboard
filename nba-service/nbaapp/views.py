@@ -10,6 +10,7 @@ from nba_api.stats.endpoints import commonplayerinfo
 import nba_api.stats.static.teams as teams
 import nba_api.stats.static.players as players
 from config import CURRENT_SEASON
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Create your views here.
 # request --> response
@@ -63,7 +64,8 @@ def getAllTeams(request):
     return JsonResponse(all_teams, safe=False)
 
 def getAwardWinners(request):
-    award_winners_path = 'C:\\Users\\Dale\\Documents\\Projects\\nba-dashboard\\nba-service\\util\\award_winners.json'
+    # award_winners_path = '/staticfiles/award_winners.json'
+    award_winners_path = staticfiles_storage.path('award_winners.json')
     season = request.GET.get('season', None)
     with open(award_winners_path, 'r') as f:
         data = json.load(f)

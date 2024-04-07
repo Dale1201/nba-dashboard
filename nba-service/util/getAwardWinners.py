@@ -78,7 +78,7 @@ for year in years:
     print(season_awards)
     time.sleep(5)
 
-with open('award_winners.json', 'w') as f:
+with open('../staticfiles/award_winners.json', 'w') as f:
     json.dump(season_award_winners, f)
 
 
