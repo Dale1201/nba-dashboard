@@ -3,7 +3,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
 import STATS from "../utils/constants/stats";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import SeasonService from "../api/nba-api/season-service";
 import Dropdown from "primevue/dropdown";
 import ProgressSpinner from "primevue/progressspinner";
@@ -27,6 +27,11 @@ onMounted(async () => {
   fetchingData.value = false;
 });
 
+onUnmounted(() => {
+  statLeaders.value = [];
+  selectedStat.value = "PTS";
+});
+
 async function fetchStatLeaders() {
   statLeaders.value = [];
 
@@ -42,8 +47,6 @@ async function fetchStatLeaders() {
 async function handleStatChange(stat) {
   if (!stat) return;
   selectedStat.value = stat;
-  statLeaders.value.sort((a, b) => b[stat] - a[stat]);
-  statLeaders.value = statLeaders.value.map((player, index) => ({ ...player, RANK: index + 1 }));
 }
 
 const showPlayoffLeaders = ref(false);
@@ -61,6 +64,13 @@ function handleSeasonModeChange() {
   }
   fetchStatLeaders();
 }
+
+const displayStatLeaders = computed(() => {
+  if (!statLeaders.value.length) return [];
+  return statLeaders.value
+    .sort((a, b) => b[selectedStat.value] - a[selectedStat.value])
+    .map((player, index) => ({ ...player, RANK: index + 1 }));
+});
 </script>
 
 <template>
@@ -80,7 +90,7 @@ function handleSeasonModeChange() {
     <DataTable
       v-if="statLeaders.length"
       class="stat-leader-table"
-      :value="statLeaders"
+      :value="displayStatLeaders"
       paginator
       :rows="10"
       :rowsPerPageOptions="[10, 20, 50]"
