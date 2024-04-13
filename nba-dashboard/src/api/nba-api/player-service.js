@@ -17,7 +17,6 @@ export default class PlayerService {
 
   static async getPlayerSeasonStats(playerId) {
     const response = await ApiService.get(`player-career-stats/${playerId}`);
-    console.log(response.data)
     return response.data.reverse();
   }
 }
