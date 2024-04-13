@@ -42,7 +42,8 @@ async function fetchStatLeaders() {
 async function handleStatChange(stat) {
   if (!stat) return;
   selectedStat.value = stat;
-  fetchStatLeaders();
+  statLeaders.value.sort((a, b) => b[stat] - a[stat]);
+  statLeaders.value = statLeaders.value.map((player, index) => ({ ...player, RANK: index + 1 }));
 }
 
 const showPlayoffLeaders = ref(false);
