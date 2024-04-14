@@ -150,6 +150,7 @@ const displayStatLeaders = computed(() => {
 <style scoped>
 .stat-leaders-content {
   padding: 1rem;
+  min-width: 71rem;
   background-color: #1e1e1e;
 }
 

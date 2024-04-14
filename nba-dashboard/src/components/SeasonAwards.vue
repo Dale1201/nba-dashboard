@@ -53,7 +53,8 @@ async function fetchAwardWinners() {
 
 <style scoped>
 .award-winners-content {
-  padding: 1rem 1rem 2rem 1rem;
+  padding: 1rem;
+  padding-right: 0;
   background-color: #1e1e1e;
 }
 
@@ -62,7 +63,6 @@ async function fetchAwardWinners() {
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 2rem;
 }
 
 .award-headshot-container {
