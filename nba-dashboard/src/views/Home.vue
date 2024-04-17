@@ -24,7 +24,7 @@
           </router-link>
         </div>
         <div class="players router-container">
-          <router-link to="/season-stats">
+          <router-link to="/players">
             <Button>Players</Button>
           </router-link>
         </div>
