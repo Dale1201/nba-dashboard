@@ -30,28 +30,46 @@ def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
 
 
 def getPlayerCareerStats(request, player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, per_mode36="PerGame")
-    df = player_stats.get_data_frames()[0]
-    return HttpResponse(df.to_json(orient='records'))
+    # player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, per_mode36="PerGame")
+    # df = player_stats.get_data_frames()[0]
+    # return HttpResponse(df.to_json(orient='records'))
+    players_path = staticfiles_storage.path('players.json')
+    with open(players_path, 'r') as f:
+        data = json.load(f)
+
+    player_info = data.get(player_id, None)
+    return JsonResponse(player_info, safe=False)
 
 
 def getPlayerInfo(request, player_id):
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
-    df = player_info.get_data_frames()[0]
-    return HttpResponse(df.to_json(orient='records'))
+    players_path = staticfiles_storage.path('players.json')
+    with open(players_path, 'r') as f:
+        data = json.load(f)
+
+    player_info = data.get(player_id, None)
+    return JsonResponse(player_info, safe=False)
+    # player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
+    # df = player_info.get_data_frames()[0]
+    # return HttpResponse(df.to_json(orient='records'))
 
 
 def getAllPlayers(request):
     season = request.GET.get('season', None)
-    if not season:
-        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=0, league_id='00')
-    else:
-        common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=season)
+    players_path = staticfiles_storage.path('players.json')
+    with open(players_path, 'r') as f:
+        data = json.load(f)
 
-    df = common_players.get_data_frames()[0]
-    return HttpResponse(df.to_json(orient='records'))
-    # all_players = players.get_players()
-    # return JsonResponse(all_players, safe=False)
+    players_list = [{"id": id, **value} for id, value in data.items()]
+    season_players = []
+    if season:
+        for player in players_list:
+            for season_stats in player['SeasonAverages']:
+                if season_stats['Season'] == season:
+                    season_players.append(player)
+                    break
+        return JsonResponse(season_players, safe=False)
+    else:
+        return JsonResponse(players_list, safe=False)
 
 
 def getTeamRoster(request, team_id, season):

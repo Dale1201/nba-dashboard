@@ -5,7 +5,8 @@ from nba_api.stats.endpoints import commonallplayers
 from nba_api.stats.endpoints import commonteamroster
 import pandas as pd
 import nba_api.stats.static.teams as teams
-import nba_api.stats.static.players as players
+# import nba_api.stats.static.players as players
+import unicodedata
 
 # Get all players
 # all_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season='2020-21')
@@ -29,6 +30,24 @@ import nba_api.stats.static.players as players
 # all_teams = teams.get_teams()
 # print(all_teams)
 
-players = players.get_players()
-print(players)
+# players = players.get_players()
+# print(players)
 
+# def strip_accents(text):
+#     text = unicodedata.normalize('NFD', text)
+#     text = text.encode('ascii', 'ignore')
+#     text = text.decode("utf-8")
+#     return str(text)
+#
+# text = "Álex Abrines"
+# print(strip_accents(text)) # Output: Alvaro
+
+original_dict = {
+    "id_1": {"key1": "value1", "key2": "value2"},
+    "id_2": {"key3": "value3", "key4": "value4"}
+}
+
+# Convert to list of dictionaries with ID key inside each dictionary
+list_of_dicts = [{"id": id, **value} for id, value in original_dict.items()]
+
+print(list_of_dicts)
