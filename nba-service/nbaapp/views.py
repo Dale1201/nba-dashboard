@@ -37,7 +37,7 @@ def getPlayerCareerStats(request, player_id):
     with open(players_path, 'r') as f:
         data = json.load(f)
 
-    player_info = data.get(player_id, None)
+    player_info = data.get(player_id, None)["SeasonAverages"]
     return JsonResponse(player_info, safe=False)
 
 

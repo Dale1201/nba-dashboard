@@ -12,7 +12,7 @@ export default class PlayerService {
 
   static async getPlayerInfo(id) {
     const response = await ApiService.get(`player-info/${id}`);
-    return response.data[0];
+    return response.data;
   }
 
   static async getPlayerSeasonStats(playerId) {

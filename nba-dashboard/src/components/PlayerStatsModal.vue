@@ -1,11 +1,12 @@
 <script setup>
 import Dialog from "primevue/dialog";
 import PlayerService from "../api/nba-api/player-service";
-import { computed, defineProps, onUpdated, ref } from "vue";
+import { computed, defineProps, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ProgressSpinner from "primevue/progressspinner";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
+import { teamCodeToName } from "../utils/translaters/teamCodeToId";
 
 const props = defineProps({
   playerId: Number,
@@ -21,6 +22,9 @@ const displaySeasonStats = computed(() => {
 
 const isLoading = ref(false);
 async function fetchPlayerInfo() {
+  if (!props.playerId) {
+    return;
+  }
   isLoading.value = true;
   playerInfo.value = await PlayerService.getPlayerInfo(props.playerId);
   seasonStats.value = await PlayerService.getPlayerSeasonStats(props.playerId);
@@ -48,53 +52,61 @@ async function loadMore() {
         />
       </div>
       <div v-if="!isLoading">
-        <p>Position: {{ playerInfo["POSITION"] || "N/A" }}</p>
-        <p>Team: {{ `${playerInfo["TEAM_CITY"]} ${playerInfo["TEAM_NAME"]}` || "N/A" }}</p>
-        <p>Height: {{ playerInfo["HEIGHT"] }}</p>
+        <p>Position: {{ playerInfo["Position"] || "N/A" }}</p>
+        <p>
+          Team:
+          {{ `${teamCodeToName[playerInfo["Teams"]?.slice(-1)]}` || "N/A" }}
+        </p>
+        <p>Height: {{ playerInfo["Height"] }}</p>
       </div>
     </div>
-    <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center" />
+    <ProgressSpinner
+      v-if="isLoading"
+      style="width: 50px; height: 50px; display: flex; justify-content: center"
+    />
     <h1>Season Averages</h1>
     <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">
       No data available for this player
     </div>
     <div v-else class="season-average-container">
       <DataTable :value="displaySeasonStats">
-        <column field="GP" header="Games Played" sortable></column>
-        <column field="TEAM_ABBREVIATION" header="Team"></column>
-        <column field="SEASON_ID" header="Season" sortable></column>
-        <column field="PTS" header="PTS" sortable>
+        <column field="GamesPlayed" header="Games Played" sortable></column>
+        <column field="Team" header="Team"></column>
+        <column field="Season" header="Season" sortable></column>
+        <column field="PtsPerGame" header="PTS" sortable>
           <template #body="slotProps">
-            {{ slotProps.data["PTS"] }}
+            {{ slotProps.data["PtsPerGame"] }}
           </template>
         </column>
-        <column field="REB" header="REB" sortable>
+        <column field="RebPerGame" header="REB" sortable>
           <template #body="slotProps">
-            {{ slotProps.data["REB"] }}
+            {{ slotProps.data["RebPerGame"] }}
           </template>
         </column>
-        <column field="AST" header="AST" sortable>
+        <column field="AstPerGame" header="AST" sortable>
           <template #body="slotProps">
-            {{ slotProps.data["AST"] }}
+            {{ slotProps.data["AstPerGame"] }}
           </template>
         </column>
-        <column field="STL" header="STL" sortable>
+        <column field="StlPerGame" header="STL" sortable>
           <template #body="slotProps">
-            {{ slotProps.data["STL"] }}
+            {{ slotProps.data["StlPerGame"] }}
           </template>
         </column>
-        <column field="BLK" header="BLK" sortable>
+        <column field="BlkPerGame" header="BLK" sortable>
           <template #body="slotProps">
-            {{ slotProps.data["BLK"] }}
+            {{ slotProps.data["BlkPerGame"] }}
           </template>
         </column>
-        <column field="FG_PCT" header="FG%" sortable></column>
-        <column field="FG3_PCT" header="3P%" sortable></column>
-        <column field="FT_PCT" header="FT%" sortable></column>
+        <column field="FGP" header="FG%" sortable></column>
+        <column field="ThreePP" header="3P%" sortable></column>
+        <column field="FTP" header="FT%" sortable></column>
       </DataTable>
 
       <div class="load-button-container">
-        <Button @click="loadMore" v-if="!loadMoreClicked && seasonStats.length > 3">View All</Button>
+        <Button @click="loadMore" v-if="!loadMoreClicked && seasonStats.length > 3"
+          >View All</Button
+        >
       </div>
     </div>
   </Dialog>

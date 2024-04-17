@@ -10,6 +10,7 @@ import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import ToggleButton from "primevue/togglebutton";
 import ProgressSpinner from "primevue/progressspinner";
+import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 
 const PLAYERS_PER_PAGE = 20;
 
@@ -18,7 +19,9 @@ const teams = ref("");
 const isLoading = ref(true);
 onMounted(async () => {
   teams.value = await TeamService.getTeams();
-  players.value = await PlayerService.getPlayers().finally(() => (isLoading.value = false));
+  players.value = await PlayerService.getPlayers().finally(
+    () => (isLoading.value = false)
+  );
 });
 
 // Paginator logic
@@ -28,7 +31,10 @@ async function onPageChange(event) {
     currentPage.value = 1;
     return;
   }
-  currentPage.value = Math.min(event.page, Math.floor(players.value.length / PLAYERS_PER_PAGE));
+  currentPage.value = Math.min(
+    event.page,
+    Math.floor(players.value.length / PLAYERS_PER_PAGE)
+  );
 }
 
 const playerSearch = ref("");
@@ -43,16 +49,24 @@ const displayPlayers = computed(() => {
   let res = players.value;
   if (playerSearch.value) {
     res = players.value.filter((player) =>
-      player["DISPLAY_FIRST_LAST"].toLowerCase().includes(playerSearch.value.toLowerCase())
+      player["Name"].toLowerCase().includes(playerSearch.value.toLowerCase())
     );
   }
 
   if (teamsSelected.value.length > 0) {
-    res = res.filter((player) => teamsSelected.value.includes(player["TEAM_ID"]));
+    res = res.filter((player) => {
+      if (player["IsActive"]) {
+        return teamsSelected.value.includes(teamCodeToId[player["Teams"].slice(-1)]);
+      } else {
+        return teamsSelected.value.some((teamId) =>
+          player["Teams"].includes(teamIdToCode[teamId])
+        );
+      }
+    });
   }
 
   if (showActivePlayers.value) {
-    res = res.filter((player) => player["ROSTERSTATUS"] === 1);
+    res = res.filter((player) => player["IsActive"]);
   }
   return res.slice(indexMin, indexMax);
 });
@@ -92,7 +106,12 @@ function clearFilters() {
 <template>
   <div style="display: flex; justify-content: flex-end; gap: 2rem">
     <div style="display: flex; align-items: center; gap: 1rem">
-      <ToggleButton style="width: 6rem" v-model="showActivePlayers" onLabel="Active" offLabel="All" />
+      <ToggleButton
+        style="width: 6rem"
+        v-model="showActivePlayers"
+        onLabel="Active"
+        offLabel="All"
+      />
       <span>Filter By:</span>
       <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
         Teams
@@ -105,10 +124,18 @@ function clearFilters() {
       <InputIcon>
         <i class="pi pi-search" />
       </InputIcon>
-      <InputText v-model="playerSearch" placeholder="Search" @keyup="handlePlayerSearchChange" />
+      <InputText
+        v-model="playerSearch"
+        placeholder="Search"
+        @keyup="handlePlayerSearchChange"
+      />
     </IconField>
 
-    <Button :disabled="playerSearch.length === 0 && teamsSelected.length === 0" @click="clearFilters">Clear</Button>
+    <Button
+      :disabled="playerSearch.length === 0 && teamsSelected.length === 0"
+      @click="clearFilters"
+      >Clear</Button
+    >
   </div>
 
   <Transition name="fade-container" mode="out-in">
@@ -127,7 +154,9 @@ function clearFilters() {
 
   <div class="filter-box" v-if="teamsSelected.length > 0">
     <div class="filter-logo-container" v-for="team in teamsSelected">
-      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)"><p>x</p></button>
+      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)">
+        <p>x</p>
+      </button>
       <img
         :src="getTeamLogo(team)"
         onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
@@ -137,29 +166,39 @@ function clearFilters() {
   </div>
 
   <div style="padding: 1rem"></div>
-  <ProgressSpinner v-if="isLoading" style="width: 50px; height: 50px; display: flex; justify-content: center" />
+  <ProgressSpinner
+    v-if="isLoading"
+    style="width: 50px; height: 50px; display: flex; justify-content: center"
+  />
   <div v-else-if="displayPlayers.length == 0">No Players Found</div>
   <div class="players" v-else>
     <div
       class="player"
       v-for="player in displayPlayers"
-      :key="player['PERSON_ID']"
+      :key="player.id"
       @click="togglePlayerStatsModal(player)"
     >
       <div class="headshot-container">
         <img
-          :src="getPlayerHeadshot(player['PERSON_ID'])"
+          :src="getPlayerHeadshot(player.id)"
           onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
           alt="player image"
         />
       </div>
-      <div>{{ player["DISPLAY_FIRST_LAST"] }}</div>
+      <div>{{ player["Name"] }}</div>
     </div>
   </div>
   <div style="padding: 2rem"></div>
-  <div class="paginator-container" style="display: flex; justify-content: center; align-items: center">
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 5 })">&lt&lt</button>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 1 })">&lt</button>
+  <div
+    class="paginator-container"
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 5 })">
+      &lt&lt
+    </button>
+    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 1 })">
+      &lt
+    </button>
     <div class="paginator" v-if="currentPage <= 3">
       <div
         v-for="n in 5"
@@ -177,7 +216,10 @@ function clearFilters() {
       <div class="paginator-number" @click="onPageChange({ page: currentPage - 1 })">
         {{ currentPage - 1 }}
       </div>
-      <div class="paginator-number highlight-paginator-number" @click="onPageChange({ page: currentPage })">
+      <div
+        class="paginator-number highlight-paginator-number"
+        @click="onPageChange({ page: currentPage })"
+      >
         {{ currentPage }}
       </div>
       <div class="paginator-number" @click="onPageChange({ page: currentPage + 1 })">
@@ -187,14 +229,18 @@ function clearFilters() {
         {{ currentPage + 2 }}
       </div>
     </div>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 1 })">&gt</button>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 5 })">&gt&gt</button>
+    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 1 })">
+      &gt
+    </button>
+    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 5 })">
+      &gt&gt
+    </button>
   </div>
   <PlayerStatsModal
     v-model:visible="isPlayerStatsModalVisible"
-    :player-id="selectedPlayer['PERSON_ID']"
-    :player-name="selectedPlayer['DISPLAY_FIRST_LAST']"
-    :key="selectedPlayer['PERSON_ID']"
+    :player-id="Number(selectedPlayer.id)"
+    :player-name="selectedPlayer['Name']"
+    :key="Number(selectedPlayer.id) || 0"
   />
 </template>
 

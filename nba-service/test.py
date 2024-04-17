@@ -1,3 +1,5 @@
+import json
+
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.endpoints import commonallplayers
 from nba_api.stats.endpoints import LeagueLeaders
@@ -5,7 +7,7 @@ from nba_api.stats.endpoints import commonallplayers
 from nba_api.stats.endpoints import commonteamroster
 import pandas as pd
 import nba_api.stats.static.teams as teams
-# import nba_api.stats.static.players as players
+import nba_api.stats.static.players as players
 import unicodedata
 
 # Get all players
@@ -27,8 +29,8 @@ import unicodedata
 # print(df.to_dict(orient='records'))
 
 # Get all teams
-# all_teams = teams.get_teams()
-# print(all_teams)
+all_teams = teams.get_teams()
+print(json.dumps(all_teams))
 
 # players = players.get_players()
 # print(players)
@@ -42,12 +44,12 @@ import unicodedata
 # text = "Álex Abrines"
 # print(strip_accents(text)) # Output: Alvaro
 
-original_dict = {
-    "id_1": {"key1": "value1", "key2": "value2"},
-    "id_2": {"key3": "value3", "key4": "value4"}
-}
-
-# Convert to list of dictionaries with ID key inside each dictionary
-list_of_dicts = [{"id": id, **value} for id, value in original_dict.items()]
-
-print(list_of_dicts)
+# original_dict = {
+#     "id_1": {"key1": "value1", "key2": "value2"},
+#     "id_2": {"key3": "value3", "key4": "value4"}
+# }
+#
+# # Convert to list of dictionaries with ID key inside each dictionary
+# list_of_dicts = [{"id": id, **value} for id, value in original_dict.items()]
+#
+# print(list_of_dicts)
