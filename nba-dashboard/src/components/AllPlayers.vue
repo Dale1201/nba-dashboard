@@ -10,6 +10,7 @@ import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import ToggleButton from "primevue/togglebutton";
 import ProgressSpinner from "primevue/progressspinner";
+import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 
 const PLAYERS_PER_PAGE = 20;
@@ -65,6 +66,14 @@ const displayPlayers = computed(() => {
     });
   }
 
+  if (selectedPositions.value.length > 0) {
+    res = res.filter((player) =>
+      selectedPositions.value.some((position) =>
+        player["Position"].includes(position.value)
+      )
+    );
+  }
+
   if (showActivePlayers.value) {
     res = res.filter((player) => player["IsActive"]);
   }
@@ -91,15 +100,49 @@ function handleTeamLogoClick(teamId) {
 }
 
 // Active players filter logic
+function handleFilterButtonClick(filter) {
+  if (filter === "teams") {
+    showTeams.value = !showTeams.value;
+    showPositions.value = false;
+  } else if (filter === "positions") {
+    showPositions.value = !showPositions.value;
+    showTeams.value = false;
+  }
+}
+
 const showActivePlayers = ref(true);
 
 function handleCloseFilterLogoClick(teamId) {
   teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
 }
 
+const isClearFilterButtonDisabled = computed(() => {
+  return (
+    playerSearch.length === 0 &&
+    teamsSelected.length === 0 &&
+    selectedPositions.length === 0
+  );
+});
+
 function clearFilters() {
   playerSearch.value = "";
   teamsSelected.value = [];
+  selectedPositions.value = [];
+}
+
+// Position filter logic
+const showPositions = ref(false);
+const selectedPositions = ref([]);
+const positionOptions = [
+  { label: "Guards", value: "G" },
+  { label: "Forwards", value: "F" },
+  { label: "Centers", value: "C" },
+];
+
+function handleCloseFilterPositionClick(position) {
+  selectedPositions.value = selectedPositions.value.filter(
+    (pos) => pos.value !== position.value
+  );
 }
 </script>
 
@@ -113,10 +156,24 @@ function clearFilters() {
         offLabel="All"
       />
       <span>Filter By:</span>
-      <Button @click="showTeams = !showTeams" class="filter-button" severity="info">
-        Teams
+      <Button
+        @click="handleFilterButtonClick('teams')"
+        class="filter-button"
+        severity="info"
+      >
+        Team
         <Transition name="fade-container" mode="out-in">
           <div v-if="showTeams" class="triangle"></div>
+        </Transition>
+      </Button>
+      <Button
+        @click="handleFilterButtonClick('positions')"
+        class="filter-button"
+        severity="info"
+      >
+        Position
+        <Transition name="fade-container" mode="out-in">
+          <div v-if="showPositions" class="triangle"></div>
         </Transition>
       </Button>
     </div>
@@ -131,11 +188,7 @@ function clearFilters() {
       />
     </IconField>
 
-    <Button
-      :disabled="playerSearch.length === 0 && teamsSelected.length === 0"
-      @click="clearFilters"
-      >Clear</Button
-    >
+    <Button :disabled="isClearFilterButtonDisabled" @click="clearFilters">Clear</Button>
   </div>
 
   <Transition name="fade-container" mode="out-in">
@@ -152,9 +205,24 @@ function clearFilters() {
     </div>
   </Transition>
 
-  <div class="filter-box" v-if="teamsSelected.length > 0">
-    <div class="filter-logo-container" v-for="team in teamsSelected">
-      <button class="close-filter-button" @click="handleCloseFilterLogoClick(team)">
+  <Transition name="fade-container" mode="out-in">
+    <div class="positions-continer" v-if="showPositions">
+      <SelectButton
+        v-model="selectedPositions"
+        :options="positionOptions"
+        multiple
+        optionLabel="label"
+      />
+    </div>
+  </Transition>
+
+  <div class="filter-box" v-if="teamsSelected.length > 0 || selectedPositions.length > 0">
+    <div
+      @click="handleCloseFilterLogoClick(team)"
+      class="filter-logo-container"
+      v-for="team in teamsSelected"
+    >
+      <button class="close-filter-button">
         <p>x</p>
       </button>
       <img
@@ -162,6 +230,18 @@ function clearFilters() {
         onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
         alt="player image"
       />
+    </div>
+    <div
+      @click="handleCloseFilterPositionClick(position)"
+      class="filter-position-container"
+      v-for="position in selectedPositions"
+    >
+      <div>
+        <button class="close-filter-button position-close-button">
+          <p>x</p>
+        </button>
+        {{ position.label }}
+      </div>
     </div>
   </div>
 
@@ -288,6 +368,10 @@ function clearFilters() {
   padding-top: 0.5rem;
 }
 
+.positions-continer {
+  margin-top: 1rem;
+}
+
 .headshot-container {
   max-width: 8rem;
 
@@ -308,6 +392,7 @@ function clearFilters() {
 .filter-box {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
   padding: 2rem;
 }
@@ -315,10 +400,18 @@ function clearFilters() {
 .filter-logo-container {
   max-width: 4rem;
   position: relative;
-
+  cursor: pointer;
   img {
     width: 100%;
   }
+}
+
+.filter-position-container {
+  background-color: #9fa8da;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  position: relative;
+  cursor: pointer;
 }
 
 .close-filter-button {
@@ -335,6 +428,11 @@ function clearFilters() {
   border-radius: 50%;
   cursor: pointer;
   padding-bottom: 2px;
+}
+
+.position-close-button {
+  top: 0.2rem;
+  right: 0.1rem;
 }
 
 .filter-button {

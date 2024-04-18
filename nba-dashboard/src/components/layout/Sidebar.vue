@@ -3,7 +3,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar-header">
-      <router-link class="logo-container" to="/" >
+      <router-link class="logo-container" to="/">
         <div class="logo-img-container">
           <img src="/nba-logo.svg" alt="Logo" />
         </div>
@@ -11,8 +11,10 @@
       </router-link>
     </div>
     <div class="sidebar-menu-container">
-      <router-link to="/season-stats" class="sidebar-menu-item">Seasons</router-link>
-      <router-link to="/players" class="sidebar-menu-item">Players</router-link>
+      <router-link to="/season-stats" class="sidebar-menu-item"
+        >Season Leaders</router-link
+      >
+      <router-link to="/players" class="sidebar-menu-item">Player Archives</router-link>
     </div>
   </div>
 </template>
@@ -27,6 +29,7 @@
   display: flex;
   flex-direction: column;
   background-color: #333;
+  z-index: 1;
 }
 
 .sidebar-header {

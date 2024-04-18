@@ -25,7 +25,7 @@
         </div>
         <div class="players router-container">
           <router-link to="/players">
-            <Button>Players</Button>
+            <Button>Player Archives</Button>
           </router-link>
         </div>
       </div>
