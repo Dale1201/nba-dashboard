@@ -55,7 +55,7 @@
   display: flex;
   justify-content: center;
   height: fit-content;
-  animation: 2.5s fadeIn, 1s 2.5s slideInFromBottom;
+  animation: 2s fadeIn, 1s 2s slideInFromBottom;
 }
 
 .header-content {
@@ -184,7 +184,7 @@
 }
 
 .explore-container {
-  animation: 3s 2.5s fadeInExplore forwards;
+  animation: 3s 2s fadeInExplore forwards;
   opacity: 0;
 }
 
