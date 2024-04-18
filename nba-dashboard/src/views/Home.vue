@@ -3,7 +3,7 @@
 <template>
   <div class="background"></div>
   <div class="content">
-    <div style="display: flex; justify-content: center; height: fit-content">
+    <div class="header-container">
       <div class="header-content">
         <div style="display: flex; gap: 1rem; align-items: center">
           <div class="nba-logo-container">
@@ -15,7 +15,7 @@
         <div style="padding: 1rem"></div>
       </div>
     </div>
-    <div>
+    <div class="explore-container">
       <h2 class="text-shadow-text">Explore</h2>
       <div class="routers-buttons">
         <div class="season-leaders router-container">
@@ -49,6 +49,13 @@
   gap: clamp(1rem, 10vw, 10rem);
   height: 100%;
   padding: 2rem;
+}
+
+.header-container {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+  animation: 2.5s fadeIn, 1s 2.5s slideInFromBottom;
 }
 
 .header-content {
@@ -174,5 +181,38 @@
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
+}
+
+.explore-container {
+  animation: 3s 2.5s fadeInExplore forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(140%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(140%);
+  }
+}
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(140%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInExplore {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
