@@ -7,6 +7,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import SeasonService from "../api/nba-api/season-service";
 import Dropdown from "primevue/dropdown";
 import ProgressSpinner from "primevue/progressspinner";
+import PlayerStatsModal from "./PlayerStatsModal.vue";
 
 const props = defineProps(["selectedSeason"]);
 
@@ -37,9 +38,15 @@ async function fetchStatLeaders() {
 
   fetchingData.value = true;
   if (showPlayoffLeaders.value) {
-    statLeaders.value = await SeasonService.getPlayoffsStatLeaders(selectedStat.value, props.selectedSeason);
+    statLeaders.value = await SeasonService.getPlayoffsStatLeaders(
+      selectedStat.value,
+      props.selectedSeason
+    );
   } else {
-    statLeaders.value = await SeasonService.getRegStatLeaders(selectedStat.value, props.selectedSeason);
+    statLeaders.value = await SeasonService.getRegStatLeaders(
+      selectedStat.value,
+      props.selectedSeason
+    );
   }
   fetchingData.value = false;
 }
@@ -71,6 +78,13 @@ const displayStatLeaders = computed(() => {
     .sort((a, b) => b[selectedStat.value] - a[selectedStat.value])
     .map((player, index) => ({ ...player, RANK: index + 1 }));
 });
+
+const selectedPlayer = ref({});
+const isPlayerStatsModalVisible = ref(false);
+function handlePlayerClick(player) {
+  selectedPlayer.value = player;
+  isPlayerStatsModalVisible.value = true;
+}
 </script>
 
 <template>
@@ -107,7 +121,7 @@ const displayStatLeaders = computed(() => {
           <div style="padding: 1rem">Player</div>
         </template>
         <template #body="slotProps">
-          <div class="player-col">
+          <div class="player-col" @click="handlePlayerClick(slotProps.data)">
             <div class="headshot-container">
               <img
                 :src="getPlayerHeadshot(slotProps.data.PLAYER_ID)"
@@ -115,7 +129,7 @@ const displayStatLeaders = computed(() => {
                 onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
               />
             </div>
-            <p>{{ slotProps.data.PLAYER }}</p>
+            <p class="player-text">{{ slotProps.data.PLAYER }}</p>
           </div>
         </template>
       </column>
@@ -128,11 +142,16 @@ const displayStatLeaders = computed(() => {
       <column
         v-for="stat in STATS"
         :field="stat"
-        :style="{ 'background-color': stat === selectedStat && 'rgba(159, 168, 218, 0.16)' }"
+        :style="{
+          'background-color': stat === selectedStat && 'rgba(159, 168, 218, 0.16)',
+        }"
         role="stat-header"
       >
         <template #header="slotProps">
-          <button @click="handleStatChange(slotProps.column.props.field)" class="stat-header-button">
+          <button
+            @click="handleStatChange(slotProps.column.props.field)"
+            class="stat-header-button"
+          >
             {{ stat }}
           </button>
         </template>
@@ -145,6 +164,12 @@ const displayStatLeaders = computed(() => {
 
     <p v-else>No data available</p>
   </div>
+  <PlayerStatsModal
+    v-model:visible="isPlayerStatsModalVisible"
+    :player-id="selectedPlayer['PLAYER_ID']"
+    :player-name="selectedPlayer['PLAYER']"
+    :key="selectedPlayer['PLAYER_ID'] || 0"
+  />
 </template>
 
 <style scoped>
@@ -165,6 +190,7 @@ const displayStatLeaders = computed(() => {
   display: flex;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
 }
 
 .headshot-container {
@@ -174,6 +200,10 @@ const displayStatLeaders = computed(() => {
 .headshot-container img {
   width: 100%;
   border-radius: 50%;
+}
+
+.player-text {
+  text-decoration: underline;
 }
 
 .stat-header-button {

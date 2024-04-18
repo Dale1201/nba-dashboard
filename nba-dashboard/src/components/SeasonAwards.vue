@@ -2,6 +2,7 @@
 import SeasonService from "../api/nba-api/season-service";
 import { ref, onMounted, watch } from "vue";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
+import PlayerStatsModal from "./PlayerStatsModal.vue";
 
 const props = defineProps(["selectedSeason"]);
 
@@ -28,13 +29,25 @@ async function fetchAwardWinners() {
   awardWinners.value = await SeasonService.getAwardWinners(props.selectedSeason);
   fetchingData.value = false;
 }
+
+const isPlayerStatsModalVisible = ref(false);
+const selectedPlayer = ref({});
+
+function openPlayerStatsModal(player) {
+  selectedPlayer.value = player;
+  isPlayerStatsModalVisible.value = true;
+}
 </script>
 
 <template>
   <div class="award-winners-content">
     <h2 style="text-align: left">Award Winners</h2>
     <div class="award-winners">
-      <div v-for="(winner, award) in awardWinners">
+      <div
+        v-for="(winner, award) in awardWinners"
+        @click="openPlayerStatsModal(winner)"
+        style="cursor: pointer"
+      >
         <div v-if="visibleAwards.includes(award)" class="award-circle">
           <div class="award-headshot-container">
             <img
@@ -49,6 +62,12 @@ async function fetchAwardWinners() {
       </div>
     </div>
   </div>
+  <PlayerStatsModal
+    v-model:visible="isPlayerStatsModalVisible"
+    :player-id="selectedPlayer['player_id']"
+    :player-name="selectedPlayer['player']"
+    :key="selectedPlayer['player_id'] || 0"
+  />
 </template>
 
 <style scoped>
