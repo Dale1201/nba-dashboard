@@ -5,7 +5,7 @@
   <div class="content">
     <div class="header-container">
       <div class="header-content">
-        <div style="display: flex; gap: 1rem; align-items: center">
+        <div class="header-img-container">
           <div class="nba-logo-container">
             <img src="/nba-logo.svg" alt="NBA Logo" />
           </div>
@@ -47,7 +47,6 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 10vw, 10rem);
-  height: 100%;
   padding: 2rem;
 }
 
@@ -82,9 +81,16 @@
   height: fit-content;
 }
 
-.nba-logo-container {
-  max-width: 1.5rem;
+.header-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1rem;
+  flex-wrap: wrap;
+}
 
+.nba-logo-container {
+  width: 2rem;
   img {
     width: 100%;
   }
@@ -191,16 +197,16 @@
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: translateY(140%);
+    transform: translateY(100%);
   }
   100% {
     opacity: 1;
-    transform: translateY(140%);
+    transform: translateY(100%);
   }
 }
 @keyframes slideInFromBottom {
   0% {
-    transform: translateY(140%);
+    transform: translateY(100%);
   }
   100% {
     transform: translateY(0);

@@ -28,7 +28,8 @@ export const teamCodeToId = {
     'MEM': 1610612763,
     'WAS': 1610612764,
     'DET': 1610612765,
-    'CHA': 1610612766
+    'CHA': 1610612766,
+    'CHO': 1610612766
 }
 
 export const teamIdToCode = {
@@ -61,7 +62,7 @@ export const teamIdToCode = {
     1610612763: 'MEM',
     1610612764: 'WAS',
     1610612765: 'DET',
-    1610612766: 'CHA'
+    1610612766: 'CHO'
 }
 
 export const teamCodeToName = {
@@ -94,5 +95,6 @@ export const teamCodeToName = {
     'MEM': 'Memphis Grizzlies',
     'WAS': 'Washington Wizards',
     'DET': 'Detroit Pistons',
-    'CHA': 'Charlotte Hornets'
+    'CHA': 'Charlotte Hornets',
+    'CHO': 'Charlotte Hornets'
 }
