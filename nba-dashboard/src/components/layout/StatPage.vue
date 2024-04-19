@@ -44,7 +44,7 @@ function showAboutMeModal() {
   flex-direction: column;
   align-items: center;
   transition: margin-left 0.2s;
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 1rem 0 2rem 0;
 }
 
 .page-content {
@@ -60,6 +60,7 @@ function showAboutMeModal() {
   /* height: 50px; */
   width: 100%;
   padding-bottom: 1rem;
+  padding-left: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,7 +84,7 @@ function showAboutMeModal() {
 
 .logo-container {
   width: 3rem;
-
+  margin-right: 2rem;
   img {
     width: 100%;
   }
