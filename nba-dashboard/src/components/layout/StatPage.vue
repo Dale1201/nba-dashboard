@@ -19,7 +19,11 @@ function showAboutMeModal() {
   <div class="page-content-wrapper" :class="{ 'margin-left-0': !sidebarExpanded }">
     <div class="header">
       <div class="header-heading">
-        <Button @click="sidebarExpanded = !sidebarExpanded" icon="pi pi-bars" class="hamburger-button" />
+        <Button
+          @click="sidebarExpanded = !sidebarExpanded"
+          icon="pi pi-bars"
+          class="hamburger-button"
+        />
         <h1 class="page-heading"><slot name="page-heading" /></h1>
       </div>
       <div class="logo-container" @click="showAboutMeModal">
@@ -45,6 +49,7 @@ function showAboutMeModal() {
 
 .page-content {
   max-width: 1280px;
+  width: 100%;
 }
 
 .margin-left-0 {

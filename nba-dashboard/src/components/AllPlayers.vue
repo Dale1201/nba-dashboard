@@ -13,7 +13,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 
-const PLAYERS_PER_PAGE = 20;
+const PLAYERS_PER_PAGE = 28;
 
 const players = ref([]);
 const teams = ref("");
@@ -27,6 +27,11 @@ onMounted(async () => {
 
 // Paginator logic
 const currentPage = ref(1);
+
+watch(currentPage, (newPage) => {
+  window.scrollTo({ top: "0", behavior: "smooth" });
+});
+
 async function onPageChange(event) {
   if (event.page < 1) {
     currentPage.value = 1;
@@ -147,7 +152,7 @@ function handleCloseFilterPositionClick(position) {
 </script>
 
 <template>
-  <div style="display: flex; justify-content: flex-end; gap: 2rem">
+  <div class="filter-box-container">
     <div style="display: flex; align-items: center; gap: 1rem">
       <ToggleButton
         style="width: 6rem"
@@ -325,6 +330,13 @@ function handleCloseFilterPositionClick(position) {
 </template>
 
 <style scoped>
+.filter-box-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
 .fade-container-enter-from,
 .fade-container-leave-to {
   transform: translateY(-20px);
