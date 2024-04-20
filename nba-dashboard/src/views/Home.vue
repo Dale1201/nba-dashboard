@@ -12,7 +12,7 @@
           <h1 class="text-shadow-text">NBA Archives</h1>
         </div>
         <i class="tag-line text-shadow-text">View NBA Stats: Past and Present</i>
-        <div style="padding: 1rem"></div>
+        <div style="padding: 0.5rem"></div>
       </div>
     </div>
     <div class="explore-container">
