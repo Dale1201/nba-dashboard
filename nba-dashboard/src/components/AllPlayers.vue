@@ -123,9 +123,9 @@ function handleCloseFilterLogoClick(teamId) {
 
 const isClearFilterButtonDisabled = computed(() => {
   return (
-    playerSearch.length === 0 &&
-    teamsSelected.length === 0 &&
-    selectedPositions.length === 0
+    playerSearch.value.length === 0 &&
+    teamsSelected.value.length === 0 &&
+    selectedPositions.value.length === 0
   );
 });
 
@@ -158,7 +158,7 @@ function handleCloseFilterPositionClick(position) {
         style="width: 6rem"
         v-model="showActivePlayers"
         onLabel="Active"
-        offLabel="All"
+        offLabel="All Time"
       />
       <span>Filter By:</span>
       <Button
