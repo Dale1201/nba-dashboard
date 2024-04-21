@@ -79,6 +79,10 @@
   animation: 8s rotate linear infinite;
   width: fit-content;
   height: fit-content;
+
+  @media (max-width: 768px) {
+    padding: 2rem 3rem;
+  }
 }
 
 .header-img-container {
@@ -98,6 +102,7 @@
 
 .text-shadow-text {
   text-shadow: 2px 2px black;
+  line-height: 2.25rem;
 }
 
 .buttons-container {

@@ -33,6 +33,14 @@ onUnmounted(() => {
   selectedStat.value = "PTS";
 });
 
+const displayStats = computed(() => {
+  if (!statLeaders.value.length) return [];
+
+  const firstPlayer = statLeaders.value[0];
+
+  return STATS.filter((stat) => firstPlayer[stat] !== null);
+});
+
 async function fetchStatLeaders() {
   statLeaders.value = [];
 
@@ -139,7 +147,7 @@ function handlePlayerClick(player) {
         <template #header> <div style="padding: 1rem">GP</div> </template></column
       >
       <column
-        v-for="stat in STATS"
+        v-for="stat in displayStats"
         :field="stat"
         :style="{
           'background-color': stat === selectedStat && 'rgba(159, 168, 218, 0.16)',

@@ -1,6 +1,6 @@
 <script setup>
 import SeasonService from "../api/nba-api/season-service";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
 import PlayerStatsModal from "./PlayerStatsModal.vue";
 
@@ -23,6 +23,16 @@ watch(
   }
 );
 
+const displayAwardWinners = computed(() => {
+  const display = {};
+  for (const award in awardWinners.value) {
+    if (visibleAwards.value.includes(award)) {
+      display[award] = awardWinners.value[award];
+    }
+  }
+  return display;
+});
+
 async function fetchAwardWinners() {
   awardWinners.value = {};
   fetchingData.value = true;
@@ -40,15 +50,18 @@ function openPlayerStatsModal(player) {
 </script>
 
 <template>
-  <div class="award-winners-content">
+  <div
+    class="award-winners-content"
+    v-if="Object.keys(displayAwardWinners).length > 0 && !fetchingData"
+  >
     <h2 style="text-align: left">Award Winners</h2>
     <div class="award-winners">
       <div
-        v-for="(winner, award) in awardWinners"
+        v-for="(winner, award) in displayAwardWinners"
         @click="openPlayerStatsModal(winner)"
         style="cursor: pointer"
       >
-        <div v-if="visibleAwards.includes(award)" class="award-circle">
+        <div class="award-circle">
           <div class="award-headshot-container">
             <img
               :src="getPlayerHeadshot(winner['player_id'])"
@@ -96,6 +109,7 @@ function openPlayerStatsModal(player) {
 .award-circle {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   h3 {
     font-size: 1.5rem;

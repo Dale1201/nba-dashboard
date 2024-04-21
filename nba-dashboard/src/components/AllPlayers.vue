@@ -13,7 +13,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 
-const PLAYERS_PER_PAGE = 28;
+const PLAYERS_PER_PAGE = 20;
 
 const players = ref([]);
 const teams = ref("");
