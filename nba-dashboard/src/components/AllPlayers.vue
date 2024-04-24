@@ -548,7 +548,8 @@ function handleCloseFilterPositionClick(position) {
   }
 
   .players {
-    row-gap: 1rem;
+    gap: 1rem;
+    padding-inline: 0.5rem;
   }
 
   .team-container {
