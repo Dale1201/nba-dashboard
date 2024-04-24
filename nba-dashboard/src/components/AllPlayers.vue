@@ -182,18 +182,21 @@ function handleCloseFilterPositionClick(position) {
         </Transition>
       </Button>
     </div>
-    <IconField iconPosition="left" style="width: fit-content">
-      <InputIcon>
-        <i class="pi pi-search" />
-      </InputIcon>
-      <InputText
-        v-model="playerSearch"
-        placeholder="Search"
-        @keyup="handlePlayerSearchChange"
-      />
-    </IconField>
+    <div class="search-clear-container">
+      <IconField iconPosition="left" style="width: fit-content">
+        <InputIcon>
+          <i class="pi pi-search" />
+        </InputIcon>
+        <InputText
+          class="player-search-input"
+          v-model="playerSearch"
+          placeholder="Search"
+          @keyup="handlePlayerSearchChange"
+        />
+      </IconField>
 
-    <Button :disabled="isClearFilterButtonDisabled" @click="clearFilters">Clear</Button>
+      <Button :disabled="isClearFilterButtonDisabled" @click="clearFilters">Clear</Button>
+    </div>
   </div>
 
   <Transition name="fade-container" mode="out-in">
@@ -270,7 +273,7 @@ function handleCloseFilterPositionClick(position) {
           alt="player image"
         />
       </div>
-      <div>{{ player["Name"] }}</div>
+      <p class="player-name">{{ player["Name"] }}</p>
     </div>
   </div>
   <div style="padding: 2rem"></div>
@@ -335,6 +338,18 @@ function handleCloseFilterPositionClick(position) {
   display: flex;
   justify-content: flex-end;
   gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.player-search-input {
+  width: clamp(8rem, 50vw, 14rem);
+}
+
+.search-clear-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-right: 1.8rem;
 }
 
 .fade-container-enter-from,
@@ -385,7 +400,8 @@ function handleCloseFilterPositionClick(position) {
 }
 
 .headshot-container {
-  max-width: 8rem;
+  transition: all 2s ease-in;
+  width: clamp(4rem, 15vw, 8rem);
 
   img {
     width: 100%;
@@ -393,7 +409,7 @@ function handleCloseFilterPositionClick(position) {
 }
 
 .logo-container {
-  max-width: 5rem;
+  max-width: clamp(2rem, 10vw, 5rem);
   transition: all 2s ease-in;
 
   img {
@@ -479,6 +495,7 @@ function handleCloseFilterPositionClick(position) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: clamp(4rem, 15vw, 10rem);
 }
 
 .player:hover,
@@ -486,6 +503,11 @@ function handleCloseFilterPositionClick(position) {
   cursor: pointer;
   transform: scale(1.1);
   transition: transform 0.3s;
+}
+
+.player-name {
+  font-size: clamp(0.6rem, 2vw, 1rem);
+  margin: 0;
 }
 
 .paginator {
@@ -515,5 +537,22 @@ function handleCloseFilterPositionClick(position) {
   font-size: 1rem;
   margin-inline: 0.5rem;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .filter-box-container {
+    justify-content: flex-start;
+    gap: 1rem;
+    padding-left: 1rem;
+    flex-direction: column-reverse;
+  }
+
+  .players {
+    row-gap: 1rem;
+  }
+
+  .team-container {
+    gap: 1rem;
+  }
 }
 </style>

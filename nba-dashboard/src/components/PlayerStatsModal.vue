@@ -42,7 +42,12 @@ async function loadMore() {
 </script>
 
 <template>
-  <Dialog :header="`${playerName}`" modal style="width: 80vw" @show="fetchPlayerInfo">
+  <Dialog
+    :header="`${playerName}`"
+    modal
+    style="width: 80vw; min-width: 25rem"
+    @show="fetchPlayerInfo"
+  >
     <div style="display: flex; gap: 2rem; flex-wrap: wrap">
       <div class="headshot-container">
         <img
