@@ -19,4 +19,11 @@ export default class PlayerService {
     const response = await ApiService.get(`player-career-stats/${playerId}`);
     return response.data.reverse();
   }
+  static async getPlayerPlayoffStats(playerId) {
+    const response = await ApiService.get(`player-career-stats/${playerId}`, {
+      params: { playoffs: true },
+    });
+
+    return response.data.reverse();
+  }
 }

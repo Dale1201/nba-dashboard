@@ -15,8 +15,18 @@ const props = defineProps({
 
 const playerInfo = ref({});
 const seasonStats = ref([]);
+const playoffsStats = ref([]);
+
+// Playoffs or season stats visibility
+const showPlayoffs = ref(false);
+function togglePlayoffs() {
+  showPlayoffs.value = !showPlayoffs.value;
+}
 
 const displaySeasonStats = computed(() => {
+  if (showPlayoffs.value) {
+    return loadMoreClicked.value ? playoffsStats.value : playoffsStats.value?.slice(0, 3);
+  }
   return loadMoreClicked.value ? seasonStats.value : seasonStats.value?.slice(0, 3);
 });
 
@@ -28,6 +38,7 @@ async function fetchPlayerInfo() {
   isLoading.value = true;
   playerInfo.value = await PlayerService.getPlayerInfo(props.playerId);
   seasonStats.value = await PlayerService.getPlayerSeasonStats(props.playerId);
+  playoffsStats.value = await PlayerService.getPlayerPlayoffStats(props.playerId);
   isLoading.value = false;
 
   // Reset load more clicks
@@ -69,7 +80,14 @@ async function loadMore() {
       v-if="isLoading"
       style="width: 50px; height: 50px; display: flex; justify-content: center"
     />
-    <h1>Season Averages</h1>
+    <div class="table-heading">
+      <h1>{{ showPlayoffs ? "Playoff Averages" : "Season Averages" }}</h1>
+      <Button
+        @click="togglePlayoffs"
+        v-if="playoffsStats.length > 0"
+        :icon="showPlayoffs ? 'pi pi-angle-left' : 'pi pi-angle-right'"
+      />
+    </div>
     <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">
       No data available for this player
     </div>
@@ -120,6 +138,25 @@ async function loadMore() {
 <style scoped>
 .headshot-container {
   width: fit-content;
+}
+
+.table-heading {
+  display: flex;
+  align-items: center;
+
+  h1 {
+    transition: all 0.3s;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    color: white;
+  }
+}
+
+:deep(.p-button-icon) {
+  font-size: 1.5rem;
 }
 
 .season-average-container {

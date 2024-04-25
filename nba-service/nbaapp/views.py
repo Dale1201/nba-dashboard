@@ -1,4 +1,5 @@
 import json
+from distutils.util import strtobool
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -30,14 +31,22 @@ def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
 
 
 def getPlayerCareerStats(request, player_id):
-    # player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, per_mode36="PerGame")
-    # df = player_stats.get_data_frames()[0]
-    # return HttpResponse(df.to_json(orient='records'))
-    players_path = staticfiles_storage.path('players.json')
+    isPlayoffs = strtobool(request.GET.get('playoffs', 'false'))
+    print(isPlayoffs)
+
+    if isPlayoffs:
+        players_path = staticfiles_storage.path('players-playoffs.json')
+    else:
+        players_path = staticfiles_storage.path('players.json')
+
     with open(players_path, 'r') as f:
         data = json.load(f)
 
-    player_info = data.get(player_id, None)["SeasonAverages"]
+    if isPlayoffs:
+        player_info = data.get(player_id, None)["PlayoffsSeasonAverages"]
+    else:
+        player_info = data.get(player_id, None)["SeasonAverages"]
+
     return JsonResponse(player_info, safe=False)
 
 
