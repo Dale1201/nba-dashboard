@@ -81,12 +81,14 @@ async function loadMore() {
       style="width: 50px; height: 50px; display: flex; justify-content: center"
     />
     <div class="table-heading">
-      <h1>{{ showPlayoffs ? "Playoff Averages" : "Season Averages" }}</h1>
-      <Button
-        @click="togglePlayoffs"
-        v-if="playoffsStats.length > 0"
-        :icon="showPlayoffs ? 'pi pi-angle-left' : 'pi pi-angle-right'"
-      />
+      <Transition :name="!showPlayoffs ? 'slide-in' : 'slide-in-reverse'" mode="out-in">
+        <h1 v-if="!showPlayoffs">Season Averages</h1>
+        <h1 v-else>Playoff Averages</h1>
+      </Transition>
+      <Transition name="rotate" mode="out-in">
+        <Button @click="togglePlayoffs" v-if="showPlayoffs" :icon="'pi pi-angle-left'" />
+        <Button v-else @click="togglePlayoffs" :icon="'pi pi-angle-right'" />
+      </Transition>
     </div>
     <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">
       No data available for this player
@@ -144,19 +146,59 @@ async function loadMore() {
   display: flex;
   align-items: center;
 
-  h1 {
-    transition: all 0.3s;
-  }
-
   button {
     background-color: transparent;
     border: none;
     color: white;
+    transition: all 0.3s;
   }
 }
 
 :deep(.p-button-icon) {
   font-size: 1.5rem;
+}
+
+.slide-in-enter-from {
+  opacity: 0;
+
+  transform: translateX(50%);
+}
+
+.slide-in-leave-to {
+  opacity: 1;
+  transform: translateX(-100%);
+}
+
+.slide-in-enter-active,
+.slide-in-leave-active,
+.slide-in-reverse-enter-active,
+.slide-in-reverse-leave-active {
+  transition: transform 0.2s;
+}
+
+.slide-in-reverse-enter-from {
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+.slide-in-reverse-leave-to {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: transform 0.1s;
+}
+
+.rotate-enter-from {
+  opacity: 0;
+  transform: rotate(180deg);
+}
+
+.rotate-leave-to {
+  opacity: 1;
+  transform: rotate(0deg);
 }
 
 .season-average-container {
