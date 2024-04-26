@@ -80,16 +80,20 @@ async function loadMore() {
       v-if="isLoading"
       style="width: 50px; height: 50px; display: flex; justify-content: center"
     />
-    <div class="table-heading">
+    <button class="table-heading" @click="togglePlayoffs">
       <Transition :name="!showPlayoffs ? 'slide-in' : 'slide-in-reverse'" mode="out-in">
         <h1 v-if="!showPlayoffs">Season Averages</h1>
         <h1 v-else>Playoff Averages</h1>
       </Transition>
       <Transition name="rotate" mode="out-in">
-        <Button @click="togglePlayoffs" v-if="showPlayoffs" :icon="'pi pi-angle-left'" />
-        <Button v-else @click="togglePlayoffs" :icon="'pi pi-angle-right'" />
+        <Button
+          @click.stop="togglePlayoffs"
+          v-if="showPlayoffs"
+          :icon="'pi pi-angle-left'"
+        />
+        <Button v-else @click.stop="togglePlayoffs" :icon="'pi pi-angle-right'" />
       </Transition>
-    </div>
+    </button>
     <div v-if="!isLoading && displaySeasonStats && displaySeasonStats.length == 0">
       No data available for this player
     </div>
@@ -145,6 +149,10 @@ async function loadMore() {
 .table-heading {
   display: flex;
   align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 
   button {
     background-color: transparent;
