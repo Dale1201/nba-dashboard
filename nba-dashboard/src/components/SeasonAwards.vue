@@ -98,7 +98,8 @@ function openPlayerStatsModal(player) {
 }
 
 .award-headshot-container {
-  max-width: 6rem;
+  max-width: clamp(4rem, 10vw, 6rem);
+
   border-radius: 50%;
   overflow: hidden;
   img {
@@ -112,13 +113,13 @@ function openPlayerStatsModal(player) {
   align-items: center;
 
   h3 {
-    font-size: 1.5rem;
+    font-size: clamp(0.8rem, 2vw, 1.5rem);
     margin: 0;
   }
 
   p {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: clamp(0.6rem, 1.8vw, 0.8rem);
   }
 }
 </style>
