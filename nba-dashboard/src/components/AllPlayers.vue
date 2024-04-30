@@ -149,6 +149,13 @@ function handleCloseFilterPositionClick(position) {
     (pos) => pos.value !== position.value
   );
 }
+
+watch(
+  [players, playerSearch, selectedPositions, teamsSelected, showActivePlayers],
+  () => {
+    currentPage.value = 1;
+  }
+);
 </script>
 
 <template>
