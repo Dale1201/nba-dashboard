@@ -12,8 +12,7 @@ import ToggleButton from "primevue/togglebutton";
 import ProgressSpinner from "primevue/progressspinner";
 import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
-
-const PLAYERS_PER_PAGE = 20;
+import ScrollPanel from "primevue/scrollpanel";
 
 const players = ref([]);
 const teams = ref("");
@@ -26,32 +25,10 @@ onMounted(async () => {
 });
 
 // Paginator logic
-const currentPage = ref(1);
-
-watch(currentPage, (newPage) => {
-  window.scrollTo({ top: "0", behavior: "smooth" });
-});
-
-async function onPageChange(event) {
-  if (event.page < 1) {
-    currentPage.value = 1;
-    return;
-  }
-  currentPage.value = Math.min(
-    event.page,
-    Math.floor(players.value.length / PLAYERS_PER_PAGE)
-  );
-}
 
 const playerSearch = ref("");
-function handlePlayerSearchChange() {
-  currentPage.value = 1;
-}
 
 const displayPlayers = computed(() => {
-  const indexMin = (currentPage.value - 1) * PLAYERS_PER_PAGE;
-  const indexMax = currentPage.value * PLAYERS_PER_PAGE;
-
   let res = players.value;
   if (playerSearch.value) {
     res = players.value.filter((player) =>
@@ -82,7 +59,7 @@ const displayPlayers = computed(() => {
   if (showActivePlayers.value) {
     res = res.filter((player) => player["IsActive"]);
   }
-  return res.slice(indexMin, indexMax);
+  return res;
 });
 
 // Modal logic
@@ -149,13 +126,6 @@ function handleCloseFilterPositionClick(position) {
     (pos) => pos.value !== position.value
   );
 }
-
-watch(
-  [players, playerSearch, selectedPositions, teamsSelected, showActivePlayers],
-  () => {
-    currentPage.value = 1;
-  }
-);
 </script>
 
 <template>
@@ -190,18 +160,6 @@ watch(
       </Button>
     </div>
     <div class="search-clear-container">
-      <IconField iconPosition="left" style="width: fit-content">
-        <InputIcon>
-          <i class="pi pi-search" />
-        </InputIcon>
-        <InputText
-          class="player-search-input"
-          v-model="playerSearch"
-          placeholder="Search"
-          @keyup="handlePlayerSearchChange"
-        />
-      </IconField>
-
       <Button :disabled="isClearFilterButtonDisabled" @click="clearFilters">Clear</Button>
     </div>
   </div>
@@ -265,72 +223,42 @@ watch(
     v-if="isLoading"
     style="width: 50px; height: 50px; display: flex; justify-content: center"
   />
-  <div v-else-if="displayPlayers.length == 0">No Players Found</div>
-  <div class="players" v-else>
-    <div
-      class="player"
-      v-for="player in displayPlayers"
-      :key="player.id"
-      @click="togglePlayerStatsModal(player)"
-    >
-      <div class="headshot-container">
-        <img
-          :src="getPlayerHeadshot(player.id)"
-          onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
-          alt="player image"
+  <!-- <div v-else-if="displayPlayers.length == 0">No Players Found</div> -->
+  <ScrollPanel class="players">
+    <div class="player-search-container">
+      <IconField iconPosition="left" style="width: fit-content">
+        <InputIcon>
+          <i class="pi pi-search" />
+        </InputIcon>
+        <InputText
+          class="player-search-input"
+          v-model="playerSearch"
+          placeholder="Search"
+          @keyup="handlePlayerSearchChange"
         />
-      </div>
-      <p class="player-name">{{ player["Name"] }}</p>
+      </IconField>
     </div>
-  </div>
-  <div style="padding: 2rem"></div>
-  <div
-    class="paginator-container"
-    style="display: flex; justify-content: center; align-items: center"
-  >
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 5 })">
-      &lt&lt
-    </button>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage - 1 })">
-      &lt
-    </button>
-    <div class="paginator" v-if="currentPage <= 3">
+    <div style="padding: 1rem"></div>
+    <div v-if="displayPlayers.length == 0">No Players Found</div>
+    <div v-else class="players-container">
       <div
-        v-for="n in 5"
-        class="paginator-number"
-        :class="{ 'highlight-paginator-number': n == currentPage }"
-        @click="onPageChange({ page: n })"
+        class="player"
+        v-for="player in displayPlayers"
+        :key="player.id"
+        @click="togglePlayerStatsModal(player)"
       >
-        {{ n }}
+        <div class="headshot-container">
+          <img
+            :src="getPlayerHeadshot(player.id)"
+            onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
+            alt="player image"
+          />
+        </div>
+        <p class="player-name">{{ player["Name"] }}</p>
       </div>
     </div>
-    <div class="paginator" v-else>
-      <div class="paginator-number" @click="onPageChange({ page: currentPage - 2 })">
-        {{ currentPage - 2 }}
-      </div>
-      <div class="paginator-number" @click="onPageChange({ page: currentPage - 1 })">
-        {{ currentPage - 1 }}
-      </div>
-      <div
-        class="paginator-number highlight-paginator-number"
-        @click="onPageChange({ page: currentPage })"
-      >
-        {{ currentPage }}
-      </div>
-      <div class="paginator-number" @click="onPageChange({ page: currentPage + 1 })">
-        {{ currentPage + 1 }}
-      </div>
-      <div class="paginator-number" @click="onPageChange({ page: currentPage + 2 })">
-        {{ currentPage + 2 }}
-      </div>
-    </div>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 1 })">
-      &gt
-    </button>
-    <button class="paginator-arrow" @click="onPageChange({ page: currentPage + 5 })">
-      &gt&gt
-    </button>
-  </div>
+  </ScrollPanel>
+  <p style="text-align: left">Showing {{ displayPlayers.length }} Players</p>
   <PlayerStatsModal
     v-model:visible="isPlayerStatsModalVisible"
     :player-id="Number(selectedPlayer.id)"
@@ -346,10 +274,6 @@ watch(
   justify-content: flex-end;
   gap: 2rem;
   flex-wrap: wrap;
-}
-
-.player-search-input {
-  width: clamp(8rem, 50vw, 14rem);
 }
 
 .search-clear-container {
@@ -408,7 +332,7 @@ watch(
 
 .headshot-container {
   transition: all 2s ease-in;
-  width: clamp(4rem, 15vw, 8rem);
+  width: clamp(4rem, 10vw, 6rem);
 
   img {
     width: 100%;
@@ -490,19 +414,46 @@ watch(
   left: 45%;
 }
 
+.player-search-container {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.player-search-input {
+  width: clamp(8rem, 50vw, 14rem);
+}
+
 .players {
+  width: 100%;
+  height: 500px;
+}
+
+:deep(.p-scrollpanel-wrapper) {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+}
+
+:deep(.p-scrollpanel-content) {
+  position: relative;
+}
+
+.players-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 2rem;
-  transition: all 2s ease-in;
+  row-gap: 2rem;
+  column-gap: 3rem;
 }
 
 .player {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: clamp(4rem, 15vw, 10rem);
+  max-width: clamp(4rem, 10vw, 8rem);
 }
 
 .player:hover,
@@ -515,35 +466,6 @@ watch(
 .player-name {
   font-size: clamp(0.6rem, 2vw, 1rem);
   margin: 0;
-}
-
-.paginator {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.highlight-paginator-number {
-  background-color: #7989ff;
-  border-radius: 50%;
-  border: none;
-}
-
-.paginator-number {
-  display: grid;
-  place-content: center;
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
-}
-
-.paginator-arrow {
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-  font-size: 1rem;
-  margin-inline: 0.5rem;
-  cursor: pointer;
 }
 
 @media (max-width: 768px) {
