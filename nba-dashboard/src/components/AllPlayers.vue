@@ -13,12 +13,11 @@ import ProgressSpinner from "primevue/progressspinner";
 import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 import ScrollPanel from "primevue/scrollpanel";
+import FilterBox from "./filters/FilterBox.vue";
 
 const players = ref([]);
-const teams = ref("");
 const isLoading = ref(true);
 onMounted(async () => {
-  teams.value = await TeamService.getTeams();
   players.value = await PlayerService.getPlayers().finally(
     () => (isLoading.value = false)
   );
@@ -94,24 +93,6 @@ function handleFilterButtonClick(filter) {
 
 const showActivePlayers = ref(true);
 
-function handleCloseFilterLogoClick(teamId) {
-  teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
-}
-
-const isClearFilterButtonDisabled = computed(() => {
-  return (
-    playerSearch.value.length === 0 &&
-    teamsSelected.value.length === 0 &&
-    selectedPositions.value.length === 0
-  );
-});
-
-function clearFilters() {
-  playerSearch.value = "";
-  teamsSelected.value = [];
-  selectedPositions.value = [];
-}
-
 // Position filter logic
 const showPositions = ref(false);
 const selectedPositions = ref([]);
@@ -126,10 +107,50 @@ function handleCloseFilterPositionClick(position) {
     (pos) => pos.value !== position.value
   );
 }
+
+// Filter logic
+const FILTER_OPTIONS = ref([
+  { name: "Team", value: "team" },
+  { name: "Season", value: "season" },
+  { name: "Position", value: "position" },
+  { name: "Active", value: "active" },
+  { name: "Accolades", value: "accolades" },
+]);
+
+const availableFilterOptions = computed(() => {
+  return FILTER_OPTIONS.value.filter((filter) => {
+    return !filters.value.some((f) => f.selectedFilter?.value === filter.value);
+  });
+});
+
+const filters = ref([]);
+const selectedFilter = ref("");
+
+function handleAddFilterClick() {
+  filters.value.push({
+    selectedFilter: null,
+    selectedValues: [],
+  });
+}
 </script>
 
 <template>
+  <div class="filter-buttons">
+    <Button @click="handleAddFilterClick">Add Filter</Button>
+    <Button @click="filters = []" class="clear-button">Clear</Button>
+  </div>
+  <div style="padding: 1rem"></div>
+
   <div class="filter-box-container">
+    <FilterBox
+      v-for="(filter, index) in filters"
+      v-model:selectedFilter="filters[index].selectedFilter"
+      v-model:selectedValues="filters[index].selectedValues"
+      :key="filter.selectedFilter"
+      :filters="availableFilterOptions"
+    />
+  </div>
+  <!-- <div class="filter-box-container">
     <div style="display: flex; align-items: center; gap: 1rem">
       <ToggleButton
         style="width: 6rem"
@@ -216,14 +237,13 @@ function handleCloseFilterPositionClick(position) {
         {{ position.label }}
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div style="padding: 1rem"></div>
   <ProgressSpinner
     v-if="isLoading"
     style="width: 50px; height: 50px; display: flex; justify-content: center"
   />
-  <!-- <div v-else-if="displayPlayers.length == 0">No Players Found</div> -->
   <ScrollPanel class="players">
     <div class="player-search-container">
       <IconField iconPosition="left" style="width: fit-content">
@@ -234,7 +254,6 @@ function handleCloseFilterPositionClick(position) {
           class="player-search-input"
           v-model="playerSearch"
           placeholder="Search"
-          @keyup="handlePlayerSearchChange"
         />
       </IconField>
     </div>
@@ -268,6 +287,18 @@ function handleCloseFilterPositionClick(position) {
 </template>
 
 <style scoped>
+.filter-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.clear-button {
+  background-color: transparent;
+  color: #9fa8da;
+  border: 1px solid #9fa8da;
+}
+
 .filter-box-container {
   width: 100%;
   display: flex;
@@ -423,7 +454,7 @@ function handleCloseFilterPositionClick(position) {
 }
 
 .player-search-input {
-  width: clamp(8rem, 50vw, 14rem);
+  width: clamp(8rem, 50vw, 12rem);
 }
 
 .players {
