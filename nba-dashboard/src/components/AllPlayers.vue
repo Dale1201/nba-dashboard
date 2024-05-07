@@ -1,16 +1,12 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import PlayerService from "../api/nba-api/player-service";
-import TeamService from "../api/nba-api/team-service";
 import getPlayerHeadshot from "../utils/getPlayerHeadshot";
-import getTeamLogo from "../utils/getTeamLogo";
 import PlayerStatsModal from "./PlayerStatsModal.vue";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-import ToggleButton from "primevue/togglebutton";
 import ProgressSpinner from "primevue/progressspinner";
-import SelectButton from "primevue/selectbutton";
 import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 import ScrollPanel from "primevue/scrollpanel";
 import FilterBox from "./filters/FilterBox.vue";
@@ -35,29 +31,36 @@ const displayPlayers = computed(() => {
     );
   }
 
-  if (teamsSelected.value.length > 0) {
-    res = res.filter((player) => {
-      if (player["IsActive"]) {
-        return teamsSelected.value.includes(teamCodeToId[player["Teams"].slice(-1)]);
-      } else {
-        return teamsSelected.value.some((teamId) =>
-          player["Teams"].includes(teamIdToCode[teamId])
-        );
+  for (const filter of filters.value) {
+    if (filter.selectedValues.length == 0) continue;
+
+    if (filter.selectedFilter?.value === "team") {
+      res = res.filter((player) => {
+        if (player["IsActive"]) {
+          return filter.selectedValues.includes(teamCodeToId[player["Teams"].slice(-1)]);
+        } else {
+          return filter.selectedValues.some((teamId) =>
+            player["Teams"].includes(teamIdToCode[teamId])
+          );
+        }
+      });
+    } else if (filter.selectedFilter?.value === "position") {
+      res = res.filter((player) =>
+        filter.selectedValues.some((position) =>
+          player["Position"].includes(position.value)
+        )
+      );
+    } else if (filter.selectedFilter?.value === "active") {
+      if (filter.selectedValues.length >= 2) {
+        continue;
+      } else if (filter.selectedValues.includes("Active")) {
+        res = res.filter((player) => player["IsActive"]);
+      } else if (filter.selectedValues.includes("Retired")) {
+        res = res.filter((player) => !player["IsActive"]);
       }
-    });
+    }
   }
 
-  if (selectedPositions.value.length > 0) {
-    res = res.filter((player) =>
-      selectedPositions.value.some((position) =>
-        player["Position"].includes(position.value)
-      )
-    );
-  }
-
-  if (showActivePlayers.value) {
-    res = res.filter((player) => player["IsActive"]);
-  }
   return res;
 });
 
@@ -69,52 +72,13 @@ function togglePlayerStatsModal(player) {
   isPlayerStatsModalVisible.value = !isPlayerStatsModalVisible.value;
 }
 
-const showTeams = ref(false);
-const teamsSelected = ref([]);
-
-function handleTeamLogoClick(teamId) {
-  if (teamsSelected.value.includes(teamId)) {
-    teamsSelected.value = teamsSelected.value.filter((id) => id !== teamId);
-    return;
-  }
-  teamsSelected.value = [...teamsSelected.value, teamId];
-}
-
-// Active players filter logic
-function handleFilterButtonClick(filter) {
-  if (filter === "teams") {
-    showTeams.value = !showTeams.value;
-    showPositions.value = false;
-  } else if (filter === "positions") {
-    showPositions.value = !showPositions.value;
-    showTeams.value = false;
-  }
-}
-
-const showActivePlayers = ref(true);
-
-// Position filter logic
-const showPositions = ref(false);
-const selectedPositions = ref([]);
-const positionOptions = [
-  { label: "Guards", value: "G" },
-  { label: "Forwards", value: "F" },
-  { label: "Centers", value: "C" },
-];
-
-function handleCloseFilterPositionClick(position) {
-  selectedPositions.value = selectedPositions.value.filter(
-    (pos) => pos.value !== position.value
-  );
-}
-
 // Filter logic
 const FILTER_OPTIONS = ref([
   { name: "Team", value: "team" },
-  { name: "Season", value: "season" },
+  // { name: "Season", value: "season" },
   { name: "Position", value: "position" },
   { name: "Active", value: "active" },
-  { name: "Accolades", value: "accolades" },
+  // { name: "Accolades", value: "accolades" },
 ]);
 
 const availableFilterOptions = computed(() => {
@@ -123,9 +87,15 @@ const availableFilterOptions = computed(() => {
   });
 });
 
-const filters = ref([]);
+const filters = ref([
+  {
+    selectedFilter: { name: "Active", value: "active" },
+    selectedValues: ["Active"],
+  },
+  { selectedFilter: { name: "Team", value: "team" }, selectedValues: [1610612748] },
+]);
 function handleAddFilterClick() {
-  if (filters.value.length >= 5) {
+  if (filters.value.length >= 3) {
     return;
   }
   filters.value.push({
@@ -152,94 +122,6 @@ function handleAddFilterClick() {
       :key="filter.selectedFilter"
     />
   </div>
-  <!-- <div class="filter-box-container">
-    <div style="display: flex; align-items: center; gap: 1rem">
-      <ToggleButton
-        style="width: 6rem"
-        v-model="showActivePlayers"
-        onLabel="Active"
-        offLabel="All Time"
-      />
-      <span>Filter By:</span>
-      <Button
-        @click="handleFilterButtonClick('teams')"
-        class="filter-button"
-        severity="info"
-      >
-        Team
-        <Transition name="fade-container" mode="out-in">
-          <div v-if="showTeams" class="triangle"></div>
-        </Transition>
-      </Button>
-      <Button
-        @click="handleFilterButtonClick('positions')"
-        class="filter-button"
-        severity="info"
-      >
-        Position
-        <Transition name="fade-container" mode="out-in">
-          <div v-if="showPositions" class="triangle"></div>
-        </Transition>
-      </Button>
-    </div>
-    <div class="search-clear-container">
-      <Button :disabled="isClearFilterButtonDisabled" @click="clearFilters">Clear</Button>
-    </div>
-  </div>
-
-  <Transition name="fade-container" mode="out-in">
-    <div class="team-container" v-if="showTeams">
-      <div v-for="team in teams" :key="team.id" @click="handleTeamLogoClick(team.id)">
-        <div class="logo-container">
-          <img
-            :src="getTeamLogo(team.id)"
-            onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
-            alt="player image"
-          />
-        </div>
-      </div>
-    </div>
-  </Transition>
-
-  <Transition name="fade-container" mode="out-in">
-    <div class="positions-continer" v-if="showPositions">
-      <SelectButton
-        v-model="selectedPositions"
-        :options="positionOptions"
-        multiple
-        optionLabel="label"
-      />
-    </div>
-  </Transition>
-
-  <div class="filter-box" v-if="teamsSelected.length > 0 || selectedPositions.length > 0">
-    <div
-      @click="handleCloseFilterLogoClick(team)"
-      class="filter-logo-container"
-      v-for="team in teamsSelected"
-    >
-      <button class="close-filter-button">
-        <p>x</p>
-      </button>
-      <img
-        :src="getTeamLogo(team)"
-        onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
-        alt="player image"
-      />
-    </div>
-    <div
-      @click="handleCloseFilterPositionClick(position)"
-      class="filter-position-container"
-      v-for="position in selectedPositions"
-    >
-      <div>
-        <button class="close-filter-button position-close-button">
-          <p>x</p>
-        </button>
-        {{ position.label }}
-      </div>
-    </div>
-  </div> -->
 
   <div style="padding: 1rem"></div>
   <ProgressSpinner
@@ -270,6 +152,7 @@ function handleAddFilterClick() {
       >
         <div class="headshot-container">
           <img
+            loading="lazy"
             :src="getPlayerHeadshot(player.id)"
             onerror="if (this.src != 'default.PNG') this.src = '/player-headshots/default.PNG'"
             alt="player image"
@@ -359,10 +242,6 @@ function handleAddFilterClick() {
   padding-top: 0.5rem;
 }
 
-.positions-continer {
-  margin-top: 1rem;
-}
-
 .headshot-container {
   transition: all 2s ease-in;
   width: clamp(4rem, 10vw, 6rem);
@@ -387,39 +266,6 @@ function handleAddFilterClick() {
   align-items: center;
   gap: 2rem;
   padding: 2rem;
-}
-
-.filter-logo-container {
-  max-width: 4rem;
-  position: relative;
-  cursor: pointer;
-  img {
-    width: 100%;
-  }
-}
-
-.filter-position-container {
-  background-color: #9fa8da;
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
-  position: relative;
-  cursor: pointer;
-}
-
-.close-filter-button {
-  position: absolute;
-  right: 0;
-  font-size: 0.7rem;
-  height: 0.8rem;
-  width: 0.8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ff7979;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  padding-bottom: 2px;
 }
 
 .position-close-button {

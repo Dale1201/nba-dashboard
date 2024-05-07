@@ -3,10 +3,14 @@ import TEAMS from "../../utils/constants/teams";
 import getTeamLogo from "../../utils/getTeamLogo";
 
 const selectedValues = defineModel();
-const handleTeamLogoClick = (teamId) => {
-  console.log(selectedValues.value);
-  selectedValues.value.push(teamId);
-};
+
+function handleTeamLogoClick(teamId) {
+  if (selectedValues.value.includes(teamId)) {
+    selectedValues.value = selectedValues.value.filter((id) => id !== teamId);
+    return;
+  }
+  selectedValues.value = [...selectedValues.value, teamId];
+}
 </script>
 
 <template>
@@ -30,15 +34,16 @@ const handleTeamLogoClick = (teamId) => {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 2rem;
+  gap: 1rem;
   background-color: #9fa8da;
   border-radius: 12px;
   padding: 1rem;
   margin-top: 0.5rem;
+  max-width: 40rem;
 }
 
 .logo-container {
-  max-width: clamp(2rem, 10vw, 5rem);
+  max-width: clamp(2rem, 3vw, 3.5rem);
   transition: all 2s ease-in;
 
   img {
