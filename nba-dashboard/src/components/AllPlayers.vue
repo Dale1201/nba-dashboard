@@ -92,7 +92,6 @@ const filters = ref([
     selectedFilter: { name: "Active", value: "active" },
     selectedValues: ["Active"],
   },
-  { selectedFilter: { name: "Team", value: "team" }, selectedValues: [1610612748] },
 ]);
 function handleAddFilterClick() {
   if (filters.value.length >= 3) {
