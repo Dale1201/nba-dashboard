@@ -7,6 +7,7 @@ import PrimeVue from "primevue/config";
 import "primevue/resources/themes/md-dark-indigo/theme.css";
 import Button from "primevue/button";
 import 'primeicons/primeicons.css'
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 ApiService.initialise();
@@ -14,5 +15,6 @@ ApiService.initialise();
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
+app.use(ConfirmationService);
 app.component("Button", Button);
 app.mount("#app");

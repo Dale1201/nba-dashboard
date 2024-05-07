@@ -124,9 +124,10 @@ const availableFilterOptions = computed(() => {
 });
 
 const filters = ref([]);
-const selectedFilter = ref("");
-
 function handleAddFilterClick() {
+  if (filters.value.length >= 5) {
+    return;
+  }
   filters.value.push({
     selectedFilter: null,
     selectedValues: [],
@@ -146,8 +147,9 @@ function handleAddFilterClick() {
       v-for="(filter, index) in filters"
       v-model:selectedFilter="filters[index].selectedFilter"
       v-model:selectedValues="filters[index].selectedValues"
-      :key="filter.selectedFilter"
       :filters="availableFilterOptions"
+      @remove-filter="filters.splice(index, 1)"
+      :key="filter.selectedFilter"
     />
   </div>
   <!-- <div class="filter-box-container">
