@@ -11,6 +11,11 @@ import { teamCodeToId, teamIdToCode } from "../utils/translaters/teamCodeToId";
 import ScrollPanel from "primevue/scrollpanel";
 import FilterBox from "./filters/FilterBox.vue";
 
+const MAX_SHOW_PLAYERS = ref(200);
+function handleShowMorePlayers() {
+  MAX_SHOW_PLAYERS.value += 200;
+}
+
 const players = ref([]);
 const isLoading = ref(true);
 onMounted(async () => {
@@ -23,7 +28,7 @@ onMounted(async () => {
 
 const playerSearch = ref("");
 
-const displayPlayers = computed(() => {
+const filteredPlayers = computed(() => {
   let res = players.value;
   if (playerSearch.value) {
     res = players.value.filter((player) =>
@@ -62,6 +67,10 @@ const displayPlayers = computed(() => {
   }
 
   return res;
+});
+
+const displayPlayers = computed(() => {
+  return filteredPlayers.value.slice(0, MAX_SHOW_PLAYERS.value);
 });
 
 // Modal logic
@@ -160,8 +169,15 @@ function handleAddFilterClick() {
         <p class="player-name">{{ player["Name"] }}</p>
       </div>
     </div>
+    <Button
+      class="show-more-button"
+      @click="handleShowMorePlayers"
+      v-if="filteredPlayers.length >= MAX_SHOW_PLAYERS"
+    >
+      Show More
+    </Button>
   </ScrollPanel>
-  <p style="text-align: left">Showing {{ displayPlayers.length }} Players</p>
+  <p style="text-align: left">Showing {{ filteredPlayers.length }} Players</p>
   <PlayerStatsModal
     v-model:visible="isPlayerStatsModalVisible"
     :player-id="Number(selectedPlayer.id)"
@@ -344,6 +360,14 @@ function handleAddFilterClick() {
 .player-name {
   font-size: clamp(0.6rem, 2vw, 1rem);
   margin: 0;
+}
+
+.show-more-button {
+  background-color: transparent;
+  border: none;
+  color: #7989ff;
+  padding: 1rem;
+  margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
