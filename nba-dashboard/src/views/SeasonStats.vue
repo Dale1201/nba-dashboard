@@ -23,7 +23,7 @@ const selectedSeason = ref(NBA_SEASONS_YEARS[0]);
       </div>
       <SeasonAwards
         :selectedSeason="selectedSeason"
-        v-if="selectedSeason !== NBA_SEASONS_YEARS[0]"
+        v-if="selectedSeason !== NBA_SEASONS_YEARS[0] || selectedSeason === '2023-24'"
       />
       <div style="padding: 1rem"></div>
       <StatLeadersTable :selectedSeason="selectedSeason" />
