@@ -24,9 +24,9 @@ import unicodedata
 # print(jokic.get_json())
 # print(lebron.get_dict())
 
-# common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season='2023-24')
-# df = common_players.get_data_frames()[0]
-# print(df.to_dict(orient='records'))
+common_players = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season='2023-24')
+df = common_players.get_data_frames()[0]
+print(df.to_dict(orient='records'))
 
 # Get all teams
 all_teams = teams.get_teams()

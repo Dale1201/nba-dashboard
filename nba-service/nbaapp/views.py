@@ -32,7 +32,6 @@ def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
 
 def getPlayerCareerStats(request, player_id):
     isPlayoffs = strtobool(request.GET.get('playoffs', 'false'))
-    print(isPlayoffs)
 
     if isPlayoffs:
         players_path = staticfiles_storage.path('players-playoffs.json')
@@ -42,11 +41,7 @@ def getPlayerCareerStats(request, player_id):
     with open(players_path, 'r') as f:
         data = json.load(f)
 
-    if isPlayoffs:
-        player_info = data.get(player_id, None)["PlayoffsSeasonAverages"]
-    else:
-        player_info = data.get(player_id, None)["SeasonAverages"]
-
+    player_info = data.get(player_id, None)["SeasonAverages"]
     return JsonResponse(player_info, safe=False)
 
 

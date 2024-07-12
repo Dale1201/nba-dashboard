@@ -1,5 +1,18 @@
 [
   {
+    "year": "2023-24",
+    "awards": {
+      "MVP": { "player": "Nikola Jokic", "player_id": 203999 },
+      "DPOY": { "player": "Rudy Gobert", "player_id": 203497 },
+      "ROY": { "player": "Victor Wembanyama", "player_id": 1641705 },
+      "6MOY": { "player": "Naz Reid", "player_id": 1629675 },
+      "MIP": { "player": "Tyrese Maxey", "player_id": 1630178 },
+      "COY": { "player": "Mark Daigneault", "player_id": null },
+      "FMVP": { "player": "Jaylen Brown", "player_id": 1627759 },
+      "ASG MVP": { "player": "Damian Lillard", "player_id": 203081 }
+    }
+  },
+  {
     "year": "2022-23",
     "awards": {
       "MVP": { "player": "Joel Embiid", "player_id": 203954 },
