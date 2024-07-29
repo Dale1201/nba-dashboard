@@ -6,10 +6,8 @@ import StatPage from "../components/layout/StatPage.vue";
 <template>
   <StatPage>
     <template #page-heading> Player Archives </template>
-
     <AllPlayers />
     <div style="padding: 2rem"></div>
-    <!-- <Button>Compare Players</Button> -->
   </StatPage>
 </template>
 
