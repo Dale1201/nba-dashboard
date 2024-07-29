@@ -10,7 +10,6 @@ def strip_accents(text):
 
 
 players = players.get_players()
-# print(players)
 
 with open('players-playoffs.json', 'r', encoding='utf-8') as f:
     playerDict = json.load(f)
@@ -22,8 +21,6 @@ for key in list(playerDict):
 
 playerNames = list(playerDict.keys())
 newPlayerDict = {}
-# print(json.dumps(playerNames))
-
 
 for player in players:
     playerName = player['full_name']
@@ -34,8 +31,6 @@ for player in players:
         badNames.append(playerName)
     else:
         newPlayerDict[player['id']] = playerDict[playerName]
-
-# print(badNames)
 
 with open('playerPlayoffsId.json', 'w') as f:
     json.dump(newPlayerDict, f)

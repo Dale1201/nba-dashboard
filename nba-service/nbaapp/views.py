@@ -13,8 +13,6 @@ import nba_api.stats.static.players as players
 from config import CURRENT_SEASON
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-# Create your views here.
-# request --> response
 
 def getLeagueLeaders(request, stat_category_abbreviation="PTS"):
     per_mode = request.GET.get('per_mode', "PerGame")
@@ -52,9 +50,6 @@ def getPlayerInfo(request, player_id):
 
     player_info = data.get(player_id, None)
     return JsonResponse(player_info, safe=False)
-    # player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
-    # df = player_info.get_data_frames()[0]
-    # return HttpResponse(df.to_json(orient='records'))
 
 
 def getAllPlayers(request):
@@ -86,7 +81,6 @@ def getAllTeams(request):
     return JsonResponse(all_teams, safe=False)
 
 def getAwardWinners(request):
-    # award_winners_path = '/staticfiles/award_winners.json'
     award_winners_path = staticfiles_storage.path('award_winners.json')
     season = request.GET.get('season', None)
     with open(award_winners_path, 'r') as f:

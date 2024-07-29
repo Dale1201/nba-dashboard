@@ -21,12 +21,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-# save_html(r.content, 'espn_awards')
-
-# content = open_html('espn_awards')
-
-# soup = BeautifulSoup(content, 'html.parser')
-
 awards_name_translation = {
     "MVP": "MVP",
     "Defensive Player of the Year": "DPOY",
@@ -83,3 +77,7 @@ with open('../staticfiles/award_winners.json', 'w') as f:
 
 
 
+
+# save_html(r.content, 'espn_awards')
+# content = open_html('espn_awards')
+# soup = BeautifulSoup(content, 'html.parser')
